@@ -1,4 +1,4 @@
-package com.poli.fcshs.config.loader;
+package com.poli.fcshs.config;
 
 import java.io.IOException;
 import java.io.InputStream;

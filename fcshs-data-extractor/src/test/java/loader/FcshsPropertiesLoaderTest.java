@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.poli.fcshs.config.constants.FcshsSetupConstants;
-import com.poli.fcshs.config.loader.FcshsPropertiesLoader;
+import com.poli.fcshs.config.FcshsPropertiesLoader;
+import com.poli.fcshs.config.FcshsSetupConstants;
 
 public class FcshsPropertiesLoaderTest
 {

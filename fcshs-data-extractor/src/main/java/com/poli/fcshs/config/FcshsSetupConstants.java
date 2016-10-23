@@ -1,4 +1,4 @@
-package com.poli.fcshs.config.constants;
+package com.poli.fcshs.config;
 
 /**
  * 
