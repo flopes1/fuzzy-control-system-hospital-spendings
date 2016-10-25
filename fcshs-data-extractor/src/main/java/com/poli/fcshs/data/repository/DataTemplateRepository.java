@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 import com.poli.fcshs.config.FcshsConstants;
 import com.poli.fcshs.config.FcshsPropertiesLoader;
@@ -22,13 +23,18 @@ public class DataTemplateRepository implements IDataTemplateRepository
 				.getPropertyByName(FcshsSetupConstants.DATA_TEMPLATE_DIRECTORY);
 		this.initializeDirectory();
 	}
+	
+	public File getDefaultDirectory()
+	{
+		return this.rootDirectory;
+	}
 
 	public File getDataTemplateByYear(String year)
 	{
 		File dataTemplateFile = null;
 		
 		List<File> allFile = (List<File>) FileUtils.listFiles(this.rootDirectory,
-				new String[] { FcshsConstants.OUTPUT_TEMPLATE_FORMAT }, true);
+				new WildcardFileFilter("*" + FcshsConstants.OUTPUT_TEMPLATE_FORMAT), null);
 		
 		if(allFile == null || allFile.isEmpty())
 		{
@@ -37,7 +43,7 @@ public class DataTemplateRepository implements IDataTemplateRepository
 		
 		for (File file : allFile)
 		{
-			if(year.equals(file.getName() + FcshsConstants.OUTPUT_TEMPLATE_FORMAT))
+			if(year.equals(file.getName().substring(0, file.getName().lastIndexOf("."))))
 			{
 				dataTemplateFile = file;
 				break;
@@ -52,7 +58,7 @@ public class DataTemplateRepository implements IDataTemplateRepository
 		List<File> allFiles = null;
 		
 		allFiles = (List<File>) FileUtils.listFiles(this.rootDirectory,
-				new String[] { FcshsConstants.OUTPUT_TEMPLATE_FORMAT }, true);
+				new WildcardFileFilter("*" + FcshsConstants.OUTPUT_TEMPLATE_FORMAT), null);
 		
 		return allFiles;
 	}
