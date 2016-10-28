@@ -22,7 +22,9 @@ public class FcshsPropertiesLoaderTest
 	@Test
 	public void getPropertyByName()
 	{
-		String property = this.instance.getPropertyByName(FcshsSetupConstants.DATA_TEMPLATE_DIRECTORY);
+		String property = this.instance.getPropertyByName(FcshsSetupConstants.DATA_TEMPLATE_DIRECTORY_CSV);
+		assertEquals(true, property != null && !property.isEmpty());
+		property = this.instance.getPropertyByName(FcshsSetupConstants.DATA_TEMPLATE_DIRECTORY_XLS);
 		assertEquals(true, property != null && !property.isEmpty());
 	}
 
