@@ -10,7 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.poli.fcshs.data.repository.DataTemplateRepository;
+import com.poli.fcshs.data.repository.impl.DataTemplateRepository;
 
 public class DataTemplateRepositoryTest
 {

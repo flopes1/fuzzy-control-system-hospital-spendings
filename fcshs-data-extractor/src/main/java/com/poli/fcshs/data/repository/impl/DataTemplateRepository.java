@@ -1,4 +1,4 @@
-package com.poli.fcshs.data.repository;
+package com.poli.fcshs.data.repository.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import com.poli.fcshs.config.FcshsConstants;
 import com.poli.fcshs.config.FcshsPropertiesLoader;
 import com.poli.fcshs.config.FcshsSetupConstants;
+import com.poli.fcshs.data.repository.IDataTemplateRepository;
 
 public class DataTemplateRepository implements IDataTemplateRepository
 {
@@ -20,10 +21,11 @@ public class DataTemplateRepository implements IDataTemplateRepository
 	public DataTemplateRepository()
 	{
 		this.SOURCE_DIR = FcshsPropertiesLoader.getInstance()
-				.getPropertyByName(FcshsSetupConstants.DATA_TEMPLATE_DIRECTORY);
+				.getPropertyByName(FcshsSetupConstants.DATA_TEMPLATE_DIRECTORY_CSV);
+		
 		this.initializeDirectory();
 	}
-	
+
 	public File getDefaultDirectory()
 	{
 		return this.rootDirectory;
@@ -32,34 +34,34 @@ public class DataTemplateRepository implements IDataTemplateRepository
 	public File getDataTemplateByYear(String year)
 	{
 		File dataTemplateFile = null;
-		
+
 		List<File> allFile = (List<File>) FileUtils.listFiles(this.rootDirectory,
 				new WildcardFileFilter("*" + FcshsConstants.OUTPUT_TEMPLATE_FORMAT), null);
-		
-		if(allFile == null || allFile.isEmpty())
+
+		if (allFile == null || allFile.isEmpty())
 		{
 			throw new RuntimeException("The root directory is empty");
 		}
-		
+
 		for (File file : allFile)
 		{
-			if(year.equals(file.getName().substring(0, file.getName().lastIndexOf("."))))
+			if (year.equals(file.getName().substring(0, file.getName().lastIndexOf("."))))
 			{
 				dataTemplateFile = file;
 				break;
 			}
 		}
-		
+
 		return dataTemplateFile;
 	}
 
 	public List<File> getAllData()
 	{
 		List<File> allFiles = null;
-		
+
 		allFiles = (List<File>) FileUtils.listFiles(this.rootDirectory,
 				new WildcardFileFilter("*" + FcshsConstants.OUTPUT_TEMPLATE_FORMAT), null);
-		
+
 		return allFiles;
 	}
 
@@ -71,7 +73,7 @@ public class DataTemplateRepository implements IDataTemplateRepository
 		{
 			throw new IllegalArgumentException("The new data directory is Invalid");
 		}
-		
+
 		try
 		{
 			File toInsert = FileUtils.getFile(newDataDirectory);
@@ -91,30 +93,29 @@ public class DataTemplateRepository implements IDataTemplateRepository
 		boolean hasRemoved = false;
 
 		File toRemove = this.getDataTemplateByYear(year);
-		
-		if(toRemove == null)
+
+		if (toRemove == null)
 		{
 			throw new RuntimeException("The file: " + year + FcshsConstants.OUTPUT_TEMPLATE_FORMAT + " do not exist");
 		}
-		
+
 		FileUtils.deleteQuietly(toRemove);
 
 		return hasRemoved;
 	}
 
-	private boolean initializeDirectory()
+	private void initializeDirectory()
 	{
-		boolean hasInitialized = false;
 
 		this.rootDirectory = new File(this.SOURCE_DIR);
 
-		hasInitialized = rootDirectory.exists();
+		boolean hasInitialized = rootDirectory.exists();
 
 		if (!hasInitialized)
 		{
 			hasInitialized = rootDirectory.mkdirs();
 		}
-
-		return hasInitialized;
+		
 	}
+	
 }
