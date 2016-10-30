@@ -1,4 +1,6 @@
-package com.poli.fcshs.model;
+package com.poli.fcshs.model.impl;
+
+import com.poli.fcshs.model.IDataObject;
 
 public class DataObject implements IDataObject{
 

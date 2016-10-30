@@ -5,7 +5,9 @@ import java.io.IOException;
 
 import com.poli.fcshs.data.repository.impl.DataTemplateRepository;
 import com.poli.fcshs.data.repository.impl.SourceTemplateRepository;
-import com.poli.fcshs.model.DataTemplate;
+import com.poli.fcshs.model.impl.DataFile;
+
+import data.handler.impl.ExcelDataHandler;
 
 public class Test {
 
@@ -20,13 +22,13 @@ public class Test {
 		System.out.println(dataTemplateRepository.getDefaultDirectory().getAbsolutePath());
 		//C:\_FCSHS\_Data\CSV_Directory
 		
-		File inputFile = new File(sourceTemplateRepository.getDefaultDirectory().getAbsolutePath() + "/PlanilhaNormalizada.xlsx");
-		File outputFile = new File(dataTemplateRepository.getDefaultDirectory().getAbsolutePath() +"/planilhaCSV.csv");
+//		File inputFile = new File(sourceTemplateRepository.getDefaultDirectory().getAbsolutePath() + "/PlanilhaNormalizada.xlsx");
+//		File outputFile = new File(dataTemplateRepository.getDefaultDirectory().getAbsolutePath() +"/planilhaCSV.csv");
 		
 		ExcelDataHandler obj = new  ExcelDataHandler();
 		
 		
-		DataTemplate dataTemplate = new DataTemplate();
+		DataFile dataTemplate = new DataFile();
 		
 		File inputDirectory = new File(sourceTemplateRepository.getDefaultDirectory().getAbsolutePath());
 		File[] listInputFiles = inputDirectory.listFiles();

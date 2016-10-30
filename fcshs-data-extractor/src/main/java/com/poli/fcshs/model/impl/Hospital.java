@@ -1,4 +1,4 @@
-package com.poli.fcshs.model;
+package com.poli.fcshs.model.impl;
 
 import java.util.ArrayList;
 import java.util.List;

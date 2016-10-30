@@ -1,4 +1,4 @@
-package com.poli.fcshs.model;
+package data.handler.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,11 +13,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.poli.fcshs.data.repository.impl.DataTemplateRepository;
 
+import data.handler.IExcelDataHandler;
+
 public class ExcelDataHandler implements IExcelDataHandler{
 
-	public File getCsvFile(String name) {
-		return null;
-	}
+//	public File getCsvFile(String name) {
+//		return null;
+//	}
 	DataTemplateRepository dataTemplateRepository = new DataTemplateRepository();
 	public File xlsxConversorToCsv(File xlsxFile ){
 		
@@ -91,6 +93,8 @@ public class ExcelDataHandler implements IExcelDataHandler{
 
 		return csv;
 	}
+	
+	
 
 	
 }
