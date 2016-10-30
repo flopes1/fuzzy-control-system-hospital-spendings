@@ -11,15 +11,23 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.poli.fcshs.data.repository.impl.DataTemplateRepository;
+
 public class ExcelDataHandler implements IExcelDataHandler{
 
 	public File getCsvFile(String name) {
 		return null;
 	}
-
+	DataTemplateRepository dataTemplateRepository = new DataTemplateRepository();
 	public File xlsxConversorToCsv(File xlsxFile ){
-		File csv = new File( "C:/Users/vitop/Desktop/planilhaCSV.csv");
 		
+		File outputFile = new File(dataTemplateRepository.getDefaultDirectory().getAbsolutePath());
+		
+		String name =  xlsxFile.getName().replace(".", "#");
+		String [] nameFile = name.split("#");
+		
+		File csv = new File( outputFile.getAbsolutePath()+ File.separator + nameFile[0] + ".csv");
+		//System.out.println(outputFile.getAbsolutePath()+ File.separator + nameFile[0] + ".csv");
 		StringBuffer cellValue = new StringBuffer();
 		
 		try {

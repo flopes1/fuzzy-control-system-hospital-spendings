@@ -3,24 +3,56 @@ package com.poli.fcshs.model;
 import java.io.File;
 import java.io.IOException;
 
+import com.poli.fcshs.data.repository.impl.DataTemplateRepository;
+import com.poli.fcshs.data.repository.impl.SourceTemplateRepository;
 import com.poli.fcshs.model.DataTemplate;
 
 public class Test {
 
 	public static void main(String[] args) {
 		
-//		File inputFile = new File("C:/Users/Erik/Desktop/PlanilhaNormalizada.xlsx");
 		
-		File inputFile = new File("C:/Users/vitop/Desktop/planilhaCSV.csv");
+		SourceTemplateRepository sourceTemplateRepository = new SourceTemplateRepository();
+		DataTemplateRepository dataTemplateRepository = new DataTemplateRepository();
 		
-//		ExcelDataHandler obj = new  ExcelDataHandler();
-//		obj.xlsxConversorToCsv(inputFile);
+		System.out.println(sourceTemplateRepository.getDefaultDirectory().getAbsolutePath());
+		//C:\_FCSHS\_Data\XLS_Directory
+		System.out.println(dataTemplateRepository.getDefaultDirectory().getAbsolutePath());
+		//C:\_FCSHS\_Data\CSV_Directory
 		
-		DataTemplate teste = new DataTemplate();
+		File inputFile = new File(sourceTemplateRepository.getDefaultDirectory().getAbsolutePath() + "/PlanilhaNormalizada.xlsx");
+		File outputFile = new File(dataTemplateRepository.getDefaultDirectory().getAbsolutePath() +"/planilhaCSV.csv");
+		
+		ExcelDataHandler obj = new  ExcelDataHandler();
+		
+		
+		DataTemplate dataTemplate = new DataTemplate();
+		
+		File inputDirectory = new File(sourceTemplateRepository.getDefaultDirectory().getAbsolutePath());
+		File[] listInputFiles = inputDirectory.listFiles();
+		
+		File outputDirectory = new File(dataTemplateRepository.getDefaultDirectory().getAbsolutePath());
+		File[] listOutputFiles = outputDirectory.listFiles();
+		
+		for (File fileInput : listInputFiles)
+		{
+			obj.xlsxConversorToCsv(fileInput);
+		}
 		
 		try {
-			teste.listInitialize(inputFile);
-			System.out.println( teste );
+			
+			
+			
+			for (File fileOutput : listOutputFiles)
+			{
+				dataTemplate.listInitialize(fileOutput);
+				
+				System.out.println(dataTemplate);
+				
+				System.out.println("inicializou");
+		
+			}
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

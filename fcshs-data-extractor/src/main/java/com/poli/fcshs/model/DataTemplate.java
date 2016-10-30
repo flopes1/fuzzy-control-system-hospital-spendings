@@ -64,6 +64,10 @@ public class DataTemplate
 			 CSVReader reader = new CSVReader(new FileReader(csvFile.getPath()));
 			 String [] nextLine;
 			 String[] stringList = null;
+			 
+			 String name =  csvFile.getName().replace(".", "#");
+			 String [] nameFile = name.split("#");
+			 setYear(nameFile[0]);
 
 			 nextLine = reader.readNext();
 			 for (int i = 1; i < numberLines(nextLine); i++){
