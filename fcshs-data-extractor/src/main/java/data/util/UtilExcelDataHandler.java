@@ -1,4 +1,4 @@
-package data.handler.impl;
+package data.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,27 +13,23 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.poli.fcshs.data.repository.impl.DataTemplateRepository;
 
-import data.handler.IExcelDataHandler;
-
-public class ExcelDataHandler implements IExcelDataHandler{
+public class UtilExcelDataHandler{
 
 //	public File getCsvFile(String name) {
 //		return null;
 //	}
 	DataTemplateRepository dataTemplateRepository = new DataTemplateRepository();
-	public File xlsxConversorToCsv(File xlsxFile ){
+	
+	public  File xlsxConversorToCsv(File xlsxFile ){
 		
 		File outputFile = new File(dataTemplateRepository.getDefaultDirectory().getAbsolutePath());
 		
-		String name =  xlsxFile.getName().replace(".", "#");
-		String [] nameFile = name.split("#");
-		
-		File csv = new File( outputFile.getAbsolutePath()+ File.separator + nameFile[0] + ".csv");
+		File csvFile = new File( outputFile.getAbsolutePath()+ File.separator + xlsxFile.getName().substring(0, xlsxFile.getName().lastIndexOf(".")) + ".csv");
 		//System.out.println(outputFile.getAbsolutePath()+ File.separator + nameFile[0] + ".csv");
 		StringBuffer cellValue = new StringBuffer();
 		
 		try {
-			FileOutputStream fos = new FileOutputStream(csv);
+			FileOutputStream fileOutputStream = new FileOutputStream(csvFile);
 			
 			XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(xlsxFile));
 			
@@ -78,12 +74,12 @@ public class ExcelDataHandler implements IExcelDataHandler{
 				}
 			}
 
-			fos.write(cellValue.toString().getBytes());
-			fos.close();
+			fileOutputStream.write(cellValue.toString().getBytes());
+			fileOutputStream.close();
 			
-			System.out.println("testeT");
+//			System.out.println("testeT");
 		
-			return csv;
+			return csvFile;
 			
 			
 			
@@ -91,7 +87,7 @@ public class ExcelDataHandler implements IExcelDataHandler{
 			System.out.println(e.getMessage()); 
 		}
 
-		return csv;
+		return csvFile;
 	}
 	
 	

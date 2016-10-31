@@ -1,33 +1,30 @@
-package handler;
+package util;
 
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.poli.fcshs.config.FcshsPropertiesLoader;
-import com.poli.fcshs.config.FcshsSetupConstants;
 import com.poli.fcshs.data.repository.impl.DataTemplateRepository;
 import com.poli.fcshs.data.repository.impl.SourceTemplateRepository;
 
-import data.handler.impl.ExcelDataHandler;
+import data.util.UtilExcelDataHandler;
 
-public class ExcelDataHandlerTest
+public class UtilExcelDataHandlerTest
 {
-	private ExcelDataHandler instance;
+	private UtilExcelDataHandler utilExcelDataHandler;
 	private SourceTemplateRepository sourceTemplateRepository ;
 	private DataTemplateRepository dataTemplateRepository ;
-	private File inputDirectory;
 
 	@Before
 	public void Initialize()
 	{
-		this.instance =  new  ExcelDataHandler();
+		this.utilExcelDataHandler =  new  UtilExcelDataHandler();
 		sourceTemplateRepository = new SourceTemplateRepository();
 		dataTemplateRepository = new DataTemplateRepository();
-		inputDirectory = new File(sourceTemplateRepository.getDefaultDirectory().getAbsolutePath());
 	}
 
 	@Test
@@ -35,16 +32,12 @@ public class ExcelDataHandlerTest
 	{
 		
 		
-		File[] listInputFiles = inputDirectory.listFiles();
+		List<File> listInputFiles = sourceTemplateRepository.getAllData();
 		
 		for (File fileInputXlxsx : listInputFiles)
 		{
-			File testFileCsv = this.instance.xlsxConversorToCsv(fileInputXlxsx);
-			
-			String name =  testFileCsv.getName().replace(".", "#");
-			String [] nameFile = name.split("#");
-			
-			File inputFileTest = new File(dataTemplateRepository.getDefaultDirectory().getAbsolutePath() + File.separator+ nameFile[0]+ ".csv");
+			File testFileCsv = this.utilExcelDataHandler.xlsxConversorToCsv(fileInputXlxsx);
+			File inputFileTest = new File(dataTemplateRepository.getDefaultDirectory().getAbsolutePath() + File.separator+ testFileCsv.getName().substring(0, testFileCsv.getName().lastIndexOf("."))+ ".csv");
 //			System.out.println(testFileCsv.getAbsolutePath());
 //			System.out.println(inputFileTest.getAbsolutePath());
 			assertEquals(true, testFileCsv != null && testFileCsv.getAbsolutePath().equals(inputFileTest.getAbsolutePath()));

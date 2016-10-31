@@ -7,7 +7,8 @@ import com.poli.fcshs.data.repository.impl.DataTemplateRepository;
 import com.poli.fcshs.data.repository.impl.SourceTemplateRepository;
 import com.poli.fcshs.model.impl.DataFile;
 
-import data.handler.impl.ExcelDataHandler;
+import data.handler.impl.ObjectHandler;
+import data.util.UtilExcelDataHandler;
 
 public class Test {
 
@@ -25,16 +26,25 @@ public class Test {
 //		File inputFile = new File(sourceTemplateRepository.getDefaultDirectory().getAbsolutePath() + "/PlanilhaNormalizada.xlsx");
 //		File outputFile = new File(dataTemplateRepository.getDefaultDirectory().getAbsolutePath() +"/planilhaCSV.csv");
 		
-		ExcelDataHandler obj = new  ExcelDataHandler();
+		UtilExcelDataHandler obj = new  UtilExcelDataHandler();
 		
 		
-		DataFile dataTemplate = new DataFile();
+		DataFile dataTemplate ;
+		
+		ObjectHandler objectHandler= new ObjectHandler();
 		
 		File inputDirectory = new File(sourceTemplateRepository.getDefaultDirectory().getAbsolutePath());
 		File[] listInputFiles = inputDirectory.listFiles();
 		
 		File outputDirectory = new File(dataTemplateRepository.getDefaultDirectory().getAbsolutePath());
 		File[] listOutputFiles = outputDirectory.listFiles();
+		
+		// O que deveria fazer no teste
+		// scan entrada de texto do usuario;
+		// String input = read.nextLine();		
+		//dataTemplateRepository.getDataTemplateByYear(input);
+		//converterxls
+		//listinitialize
 		
 		for (File fileInput : listInputFiles)
 		{
@@ -47,7 +57,7 @@ public class Test {
 			
 			for (File fileOutput : listOutputFiles)
 			{
-				dataTemplate.listInitialize(fileOutput);
+				dataTemplate = objectHandler.listInitialize(fileOutput);
 				
 				System.out.println(dataTemplate);
 				

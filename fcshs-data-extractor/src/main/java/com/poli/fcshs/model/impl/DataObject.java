@@ -1,35 +1,28 @@
 package com.poli.fcshs.model.impl;
 
-import com.poli.fcshs.model.IDataObject;
+public class DataObject {
 
-public class DataObject implements IDataObject{
-
-	private String indicador;
+	private String indicator;
 	
-	private double valorIndicador;
+	private double indicatorValue;
 
 	public DataObject() {
 	}
 
-	public String getIndicador() {
-		return indicador;
+	public String getIndicator() {
+		return indicator;
 	}
 
 	public void setIndicador(String indicador) {
-		this.indicador = indicador;
+		this.indicator = indicador;
 	}
 
 	public double getValorIndicador() {
-		return valorIndicador;
+		return indicatorValue;
 	}
 
-	public void setValorIndicador(double valorIndicador) {
-		this.valorIndicador = valorIndicador;
+	public void setValorIndicador(double valorIndicator) {
+		this.indicatorValue = valorIndicator;
 	}
-
-
-	
-	
-	
 	
 }
