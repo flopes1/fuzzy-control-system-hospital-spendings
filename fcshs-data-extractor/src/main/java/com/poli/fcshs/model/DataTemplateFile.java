@@ -2,12 +2,13 @@ package com.poli.fcshs.model;
 
 import java.util.List;
 
+/**
+ * @author Filipe Lopes create on 22/10/2016
+ * 
+ */
+
 public class DataTemplateFile
 {
-	/**
-	 * @author Filipe Lopes create on 22/10/2016
-	 * 
-	 */
 
 	private String year;
 	private List<Hospital> hospitals;

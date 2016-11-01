@@ -1,4 +1,4 @@
-package com.poli.fcshs.data.extractor.impl;
+package com.poli.fcshs.data.extractor;
 
 import java.util.List;
 
