@@ -10,19 +10,18 @@ import org.junit.Test;
 
 import com.poli.fcshs.data.repository.impl.DataTemplateRepository;
 import com.poli.fcshs.data.repository.impl.SourceTemplateRepository;
-
-import data.util.UtilExcelDataHandler;
+import com.poli.fcshs.util.DataTemplateUtils;
 
 public class UtilExcelDataHandlerTest
 {
-	private UtilExcelDataHandler utilExcelDataHandler;
+	private DataTemplateUtils utilExcelDataHandler;
 	private SourceTemplateRepository sourceTemplateRepository ;
 	private DataTemplateRepository dataTemplateRepository ;
 
 	@Before
 	public void Initialize()
 	{
-		this.utilExcelDataHandler =  new  UtilExcelDataHandler();
+		this.utilExcelDataHandler =  new  DataTemplateUtils();
 		sourceTemplateRepository = new SourceTemplateRepository();
 		dataTemplateRepository = new DataTemplateRepository();
 	}
