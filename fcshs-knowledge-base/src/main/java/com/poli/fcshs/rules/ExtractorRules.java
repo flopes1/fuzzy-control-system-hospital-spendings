@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.poli.fcshs.config.FcshsConstants;
 import com.poli.fcshs.config.FcshsPropertiesLoader;
-import com.poli.fcshs.config.FcshsSetupConstants;
+import com.poli.fcshs.config.FcshsRulesConstants;
 import com.poli.fcshs.model.RuleModel;
 
 public class ExtractorRules
@@ -19,7 +19,7 @@ public class ExtractorRules
 	
 	public List<RuleModel> extractRules()
 	{
-		String[] ruleLines = FcshsPropertiesLoader.getInstance().getPropertyByName(FcshsSetupConstants.DATA_RULES).split(";");
+		String[] ruleLines = FcshsPropertiesLoader.getInstance().getPropertyByName(FcshsRulesConstants.DATA_RULES).split(";");
 		List<RuleModel> rules = new ArrayList<RuleModel>();
 		
 		
