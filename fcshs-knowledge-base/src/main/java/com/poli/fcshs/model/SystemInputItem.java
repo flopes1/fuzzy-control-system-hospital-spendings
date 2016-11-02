@@ -1,5 +1,7 @@
 package com.poli.fcshs.model;
 
+import com.poli.fcshs.generator.util.DataBaseGeneratorUtils;
+
 /**
  * @author Filipe Lopes created on 01/11/2016
  * 
@@ -10,17 +12,19 @@ public class SystemInputItem
 
 	private String inputName;
 	private DataTemplateItem itemTotalAmount;
-	private DataTemplateItem itemUnitaryValue;
+	private DataTemplateItem itemTotalValue;
+	private double valueUnit;
 
 	public SystemInputItem()
 	{
 	}
 	
-	public SystemInputItem(String inputName, DataTemplateItem itemTotalAmount, DataTemplateItem itemUnitaryValue)
+	public SystemInputItem(String inputName, DataTemplateItem itemTotalAmount, DataTemplateItem itemTotalValue)
 	{
 		this.inputName = inputName;
 		this.itemTotalAmount = itemTotalAmount;
-		this.itemUnitaryValue = itemUnitaryValue;
+		this.itemTotalValue = itemTotalValue;
+		this.setValueUnit(DataBaseGeneratorUtils.calculateValueUnit(itemTotalAmount, itemTotalValue));
 	}
 
 	public String getInputName()
@@ -50,17 +54,27 @@ public class SystemInputItem
 
 	public String getItemUnitaryName()
 	{
-		return itemUnitaryValue != null ? itemUnitaryValue.getIndicatorName() : "";
+		return itemTotalValue != null ? itemTotalValue.getIndicatorName() : "";
 	}
 	
 	public double getItemUnitaryValue()
 	{
-		return itemUnitaryValue != null ? itemUnitaryValue.getIndicatorValue() : 0;
+		return itemTotalValue != null ? itemTotalValue.getIndicatorValue() : 0;
 	}
 
 	public void setItemUnitaryValue(DataTemplateItem itemUnitValue)
 	{
-		this.itemUnitaryValue = itemUnitValue;
+		this.itemTotalValue = itemUnitValue;
+	}
+
+	public double getValueUnit()
+	{
+		return valueUnit;
+	}
+
+	public void setValueUnit(double valueUnit)
+	{
+		this.valueUnit = valueUnit;
 	}
 	
 }
