@@ -25,6 +25,10 @@ public class ExtractorRules
 		
 		for (String ruleLine : ruleLines)
 		{
+			
+		
+			ruleLine = ruleLine.replaceAll("\\s+", " ");
+			
 			String[] parts = ruleLine.split(" ");
 			RuleModel rule = new RuleModel();;
 			int count=1;
