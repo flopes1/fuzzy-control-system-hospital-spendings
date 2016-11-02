@@ -12,5 +12,6 @@ public class FcshsSetupConstants
 	// Data template
 	public static final String DATA_TEMPLATE_DIRECTORY_CSV = "store.templates.csv";
 	public static final String DATA_TEMPLATE_DIRECTORY_XLS = "store.templates.xls";
+	public static final String DATA_RULES = "data.rules";
 
 }
