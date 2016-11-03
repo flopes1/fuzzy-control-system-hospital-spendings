@@ -1,5 +1,7 @@
 package com.poli.fcshs.generator.util;
 
+import com.poli.fcshs.config.FcshsPropertiesLoader;
+import com.poli.fcshs.config.FcshsRulesConstants;
 import com.poli.fcshs.model.DataTemplateItem;
 
 /**
@@ -22,5 +24,22 @@ public class DataBaseGeneratorUtils
 		return result;
 		
 	}
+	public static String[] getInputTerms(){
+		
+		String[] inputTerms = FcshsPropertiesLoader.getInstance().getPropertyByName(FcshsRulesConstants.INPUT_TERMS).split(";");
+		
+		
+		return inputTerms;
+		
+	}
 
+	public static String[] getOutputTerms(){
+		
+		String[] outputTerms = FcshsPropertiesLoader.getInstance().getPropertyByName(FcshsRulesConstants.OUTPUT_TERMS).split(";");
+		
+		
+		return outputTerms;
+		
+	}
+	
 }
