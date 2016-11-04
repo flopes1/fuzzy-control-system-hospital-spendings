@@ -13,7 +13,9 @@ public class SystemInputItem
 	private String inputName;
 	private DataTemplateItem itemTotalAmount;
 	private DataTemplateItem itemTotalValue;
-	private double valueUnit;
+	private DataTemplateItem valueUnit;
+	private int month;
+
 
 	public SystemInputItem()
 	{
@@ -24,9 +26,19 @@ public class SystemInputItem
 		this.inputName = inputName;
 		this.itemTotalAmount = itemTotalAmount;
 		this.itemTotalValue = itemTotalValue;
-		this.setValueUnit(DataBaseGeneratorUtils.calculateValueUnit(itemTotalAmount, itemTotalValue));
+		this.valueUnit = new DataTemplateItem();
+		this.valueUnit.setIndicatorValue(DataBaseGeneratorUtils.calculateValueUnit(itemTotalAmount, itemTotalValue));
+		this.valueUnit.setIndicatorName(inputName + "_VAL_UNIT");
 	}
 
+	public int getMonth() {
+		return month;
+	}
+	
+	public void setMonth(int month) {
+		this.month = month;
+	}
+	
 	public String getInputName()
 	{
 		return inputName;
@@ -67,12 +79,12 @@ public class SystemInputItem
 		this.itemTotalValue = itemUnitValue;
 	}
 
-	public double getValueUnit()
+	public DataTemplateItem getValueUnit()
 	{
 		return valueUnit;
 	}
 
-	public void setValueUnit(double valueUnit)
+	public void setValueUnit(DataTemplateItem valueUnit)
 	{
 		this.valueUnit = valueUnit;
 	}

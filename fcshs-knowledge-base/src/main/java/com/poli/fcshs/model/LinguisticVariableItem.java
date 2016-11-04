@@ -65,7 +65,7 @@ public class LinguisticVariableItem
 
 	public double getMaxDomainValue()
 	{
-		return maxDomainValue;
+		return maxDomainValue * 1.3;
 	}
 
 	public void setMaxDomainValue(double maxDomainValue)

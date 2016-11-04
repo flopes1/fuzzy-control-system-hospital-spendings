@@ -5,7 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.poli.fcshs.data.extractor.DataTemplateExtractor;
+import com.poli.fcshs.generator.util.DataBaseGeneratorUtils;
+import com.poli.fcshs.model.DataTemplateFile;
+import com.poli.fcshs.model.DataTemplateItem;
+import com.poli.fcshs.model.FuzzySet;
+import com.poli.fcshs.model.Hospital;
 import com.poli.fcshs.model.LinguisticVariableItem;
+import com.poli.fcshs.model.Month;
 import com.poli.fcshs.model.SystemInputItem;
 
 /**
@@ -16,7 +22,7 @@ import com.poli.fcshs.model.SystemInputItem;
 public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 {
 
-	private String[] templatesItensNames;
+	private String templatesItemName;
 	private DataTemplateExtractor dataTemplateExtractor;
 	private List<LinguisticVariableItem> linguisticVariableItens;
 	private List<SystemInputItem> inputSystemItens;
@@ -26,35 +32,101 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 	// se quiser, pode remover o argumento se for mais inteligente utilizar
 	// todas as
 	// planilhas csv que estao cadastradas.
-	public KnowledgeBaseGenerator(String... templateItensName)
+	public KnowledgeBaseGenerator(String templatesItemName)
 	{
-		this.templatesItensNames = templateItensName;
+		this.templatesItemName = templatesItemName;
 		this.dataTemplateExtractor = new DataTemplateExtractor();
 		this.linguisticVariableItens = new ArrayList<LinguisticVariableItem>();
 		this.inputSystemItens = new ArrayList<SystemInputItem>();
 	}
 
-	public List<SystemInputItem> generateSystemInputItens()
-	{
-		// TODO Auto-generated method stub
+	//De acordo com o que foi proposto este método deve retornar a lista de itens de um hospital
+	//e portanto deve ter acesso ao hospital em questão, neste caso foi considerado o nome do hospital.
+
+	public List<SystemInputItem> generateSystemInputItens(String hospitalName){
+		int count;
+		DataTemplateFile dataTemplateFile = this.dataTemplateExtractor.extractDataByName(this.templatesItemName);
+		for (Hospital hospital : dataTemplateFile.getHospitals()) {
+			if (hospital.getName().equals(hospitalName)) {
+				for (Month month : hospital.getMonths()) {
+					count = 0;
+					List<DataTemplateItem> itens = month.getDataTemplateItens();
+					while(count < itens.size()){
+						SystemInputItem systemInputItem = new SystemInputItem();
+						systemInputItem.setInputName(itens.get(count).getIndicatorName().substring(0, itens.get(count).getIndicatorName().lastIndexOf("_")));
+						systemInputItem.setItemTotalAmount(itens.get(count));
+						systemInputItem.setItemUnitaryValue(itens.get(count+1));
+						this.inputSystemItens.add(systemInputItem);
+						count+=2;
+					}
+				}
+			}
+		}
+
+		return this.inputSystemItens;
+	}
+
+	public List<LinguisticVariableItem> generateSystemLinguisticVariables(String hospitalName){
+		DataTemplateFile dataTemplateFile = this.dataTemplateExtractor.extractDataByName(this.templatesItemName);
+
+		LinguisticVariableItem linguisticVariableItem = new LinguisticVariableItem();
+		for (Hospital hospital : dataTemplateFile.getHospitals()) {
+			if (hospital.getName().equals(hospitalName)) {
+				for (Month month : hospital.getMonths()) {
+					List<DataTemplateItem> itens = month.getDataTemplateItens();
+					for (DataTemplateItem dataTemplateItem : itens) {
+						LinguisticVariableItem linguisticVariable = containsLinguisticVariable(dataTemplateItem.getIndicatorName());
+						if ( linguisticVariable != null) {
+							FuzzySet fuzzySet = new FuzzySet();
+							fuzzySet.setFuzzySetItens(generateFuzzySet(dataTemplateItem.getIndicatorValue()));
+							linguisticVariable.getFuzzySetItens().add(fuzzySet);
+							if (linguisticVariable.getMaxDomainValue() < (dataTemplateItem.getIndicatorValue() * 1.3)) {
+								linguisticVariable.setMaxDomainValue(dataTemplateItem.getIndicatorValue());
+							}
+
+						} else {
+							linguisticVariable = new LinguisticVariableItem();
+							linguisticVariable.setLinguisticVariableName(dataTemplateItem.getIndicatorName());
+							linguisticVariable.setLinguisticTerms(DataBaseGeneratorUtils.getInputTerms());
+							FuzzySet fuzzySet = new FuzzySet();
+							fuzzySet.setFuzzySetItens(generateFuzzySet(dataTemplateItem.getIndicatorValue()));
+							linguisticVariable.getFuzzySetItens().add(fuzzySet);
+							if (linguisticVariable.getMaxDomainValue() < (dataTemplateItem.getIndicatorValue() * 1.3)) {
+								linguisticVariable.setMaxDomainValue(dataTemplateItem.getIndicatorValue());
+							}
+							linguisticVariable.setDomainType(dataTemplateItem.getIndicatorName().substring(dataTemplateItem.getIndicatorName().indexOf("_"), dataTemplateItem.getIndicatorName().length()));
+
+							this.linguisticVariableItens.add(linguisticVariableItem);
+
+						}
+
+					}
+				}
+			}
+		}
+		return this.linguisticVariableItens;
+	}
+	
+	public LinguisticVariableItem containsLinguisticVariable (String linguisticVariableItem){
+		for (LinguisticVariableItem linguisticVariable : this.linguisticVariableItens) {
+			if (linguisticVariable.getLinguisticVariableName().equals(linguisticVariableItem)) {
+				return linguisticVariable;
+			}
+		}
 		return null;
 	}
 
-	public List<LinguisticVariableItem> generateSystemLinguisticVariables()
-	{
-		// TODO Auto-generated method stub
-		return null;
+	public HashMap<Double, Double> generateFuzzySet(double indicatorValue){
+		HashMap<Double, Double> fuzzySet = new HashMap<Double, Double>();
+		
+		fuzzySet.put(indicatorValue, normalizeFuzzySetValues());
+		
+		return fuzzySet;
 	}
 
-	public HashMap<Integer, Double> generateFuzzySet()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void normalizeFuzzySetValues()
-	{
-		// TODO Auto-generated method stub
+	public double normalizeFuzzySetValues(){
+		
+		return 0;
 
 	}
 

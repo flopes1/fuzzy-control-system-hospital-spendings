@@ -14,13 +14,13 @@ import com.poli.fcshs.model.SystemInputItem;
 public interface IKnowledgeBaseGenerator
 {
 	
-	List<SystemInputItem> generateSystemInputItens();
+	List<SystemInputItem> generateSystemInputItens(String hospitalName);
 	
-	List<LinguisticVariableItem> generateSystemLinguisticVariables();
+	List<LinguisticVariableItem> generateSystemLinguisticVariables(String hospitalName);
 	
-	HashMap<Integer, Double> generateFuzzySet();
+	HashMap<Double, Double> generateFuzzySet(double indicatorValue);
 	
-	void normalizeFuzzySetValues();
+	double normalizeFuzzySetValues();
 	
 
 }

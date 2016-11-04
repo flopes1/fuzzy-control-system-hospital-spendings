@@ -11,11 +11,12 @@ public class FuzzySet
 {
 
 	private String fuzzySetName;
-	private HashMap<Integer, Double> fuzzySetItens;
+	private HashMap<Double, Double> fuzzySetItens;
+	
 
 	public FuzzySet()
 	{
-		this.fuzzySetItens = new HashMap<Integer, Double>();
+		this.fuzzySetItens = new HashMap<Double, Double>();
 	}
 
 	public FuzzySet(String fuzzyName)
@@ -34,12 +35,12 @@ public class FuzzySet
 		this.fuzzySetName = fuzzySetName;
 	}
 
-	public HashMap<Integer, Double> getFuzzySetItens()
+	public HashMap<Double, Double> getFuzzySetItens()
 	{
 		return fuzzySetItens;
 	}
 
-	public void setFuzzySetItens(HashMap<Integer, Double> fuzzySetItens)
+	public void setFuzzySetItens(HashMap<Double, Double> fuzzySetItens)
 	{
 		this.fuzzySetItens = fuzzySetItens;
 	}

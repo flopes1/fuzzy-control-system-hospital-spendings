@@ -2,6 +2,8 @@ package generator;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,12 +46,12 @@ public class DataBaseGeneratorUtilsTest
 //		rules = extractorRules.extractRules();
 //		assertEquals(true, extractorRules != null);
 		System.out.println("InputTerms:");
-		String[] inputTerms = DataBaseGeneratorUtils.getInputTerms();
-		for (String string : inputTerms)
-		{
+		List<String> inputTerms = DataBaseGeneratorUtils.getInputTerms();
+		for (String string : inputTerms) {
 			System.out.println(string);
+			
 		}
-		assertEquals(true, inputTerms.length == 3);
+		assertEquals(true, inputTerms.size() == 3);
 	}
 	
 	@Test
@@ -58,12 +60,12 @@ public class DataBaseGeneratorUtilsTest
 //		rules = extractorRules.extractRules();
 //		assertEquals(true, extractorRules != null);
 		System.out.println("OutputTerms:");
-		String[] outputTerms = DataBaseGeneratorUtils.getOutputTerms();
+		List<String> outputTerms = DataBaseGeneratorUtils.getOutputTerms();
 		for (String string : outputTerms)
 		{
 			System.out.println(string);
 		}
-		assertEquals(true, outputTerms.length == 5);
+		assertEquals(true, outputTerms.size() == 5);
 	}
 	
 }
