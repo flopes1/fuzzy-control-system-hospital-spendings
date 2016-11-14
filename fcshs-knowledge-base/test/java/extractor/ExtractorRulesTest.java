@@ -8,23 +8,21 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.poli.fcshs.model.RuleModel;
+import com.poli.fcshs.model.SystemRules;
 import com.poli.fcshs.rules.ExtractorRules;
 
 public class ExtractorRulesTest
 {
 
 	ExtractorRules extractorRules;
-	List<RuleModel> rules;
-	
+	List<SystemRules> rules;
 
 	@Before
 	public void Initialize()
 	{
-		extractorRules =  new ExtractorRules();
-		rules = new ArrayList<RuleModel>();
+		extractorRules = new ExtractorRules();
+		rules = new ArrayList<SystemRules>();
 	}
-
 
 	@Test
 	public void extractRulesTest()
@@ -32,7 +30,5 @@ public class ExtractorRulesTest
 		rules = extractorRules.extractRules();
 		assertEquals(true, extractorRules != null);
 	}
-	
-	
 
 }

@@ -13,11 +13,8 @@ import com.poli.fcshs.model.DataTemplateItem;
 public class DataBaseGeneratorUtilsTest
 {
 
-//	ExtractorRules extractorRules;
-//	List<RuleModel> rules;
 	DataTemplateItem itemTotalAmount;
 	DataTemplateItem itemTotalValue;
-	
 
 	@Before
 	public void Initialize()
@@ -26,12 +23,11 @@ public class DataBaseGeneratorUtilsTest
 		itemTotalValue = new DataTemplateItem();
 	}
 
-
 	@Test
 	public void calculateValueUnit()
 	{
-//		rules = extractorRules.extractRules();
-//		assertEquals(true, extractorRules != null);
+		// rules = extractorRules.extractRules();
+		// assertEquals(true, extractorRules != null);
 		itemTotalAmount.setIndicatorName("Amount: ");
 		itemTotalAmount.setIndicatorValue(10);
 		itemTotalValue.setIndicatorName("Value: ");
@@ -39,26 +35,27 @@ public class DataBaseGeneratorUtilsTest
 		System.out.println(DataBaseGeneratorUtils.calculateValueUnit(itemTotalAmount, itemTotalValue));
 		assertEquals(true, DataBaseGeneratorUtils.calculateValueUnit(itemTotalAmount, itemTotalValue) == 20);
 	}
-	
+
 	@Test
 	public void getInputTerms()
 	{
-//		rules = extractorRules.extractRules();
-//		assertEquals(true, extractorRules != null);
+		// rules = extractorRules.extractRules();
+		// assertEquals(true, extractorRules != null);
 		System.out.println("InputTerms:");
 		List<String> inputTerms = DataBaseGeneratorUtils.getInputTerms();
-		for (String string : inputTerms) {
+		for (String string : inputTerms)
+		{
 			System.out.println(string);
-			
+
 		}
 		assertEquals(true, inputTerms.size() == 3);
 	}
-	
+
 	@Test
 	public void getOutputTerms()
 	{
-//		rules = extractorRules.extractRules();
-//		assertEquals(true, extractorRules != null);
+		// rules = extractorRules.extractRules();
+		// assertEquals(true, extractorRules != null);
 		System.out.println("OutputTerms:");
 		List<String> outputTerms = DataBaseGeneratorUtils.getOutputTerms();
 		for (String string : outputTerms)
@@ -67,5 +64,5 @@ public class DataBaseGeneratorUtilsTest
 		}
 		assertEquals(true, outputTerms.size() == 5);
 	}
-	
+
 }

@@ -16,11 +16,10 @@ public class SystemInputItem
 	private DataTemplateItem valueUnit;
 	private int month;
 
-
 	public SystemInputItem()
 	{
 	}
-	
+
 	public SystemInputItem(String inputName, DataTemplateItem itemTotalAmount, DataTemplateItem itemTotalValue)
 	{
 		this.inputName = inputName;
@@ -31,14 +30,16 @@ public class SystemInputItem
 		this.valueUnit.setIndicatorName(inputName + "_VAL_UNIT");
 	}
 
-	public int getMonth() {
+	public int getMonth()
+	{
 		return month;
 	}
-	
-	public void setMonth(int month) {
+
+	public void setMonth(int month)
+	{
 		this.month = month;
 	}
-	
+
 	public String getInputName()
 	{
 		return inputName;
@@ -53,7 +54,7 @@ public class SystemInputItem
 	{
 		return itemTotalAmount != null ? itemTotalAmount.getIndicatorName() : "";
 	}
-	
+
 	public double getItemTotalAmountValue()
 	{
 		return itemTotalAmount != null ? itemTotalAmount.getIndicatorValue() : 0;
@@ -68,7 +69,7 @@ public class SystemInputItem
 	{
 		return itemTotalValue != null ? itemTotalValue.getIndicatorName() : "";
 	}
-	
+
 	public double getItemUnitaryValue()
 	{
 		return itemTotalValue != null ? itemTotalValue.getIndicatorValue() : 0;
@@ -88,5 +89,5 @@ public class SystemInputItem
 	{
 		this.valueUnit = valueUnit;
 	}
-	
+
 }

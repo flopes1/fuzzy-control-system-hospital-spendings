@@ -3,6 +3,9 @@ package com.poli.fcshs.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.poli.fcshs.config.FcshsPropertiesLoader;
+import com.poli.fcshs.config.FcshsSetupConstants;
+
 /**
  * @author Filipe Lopes created on 01/11/2016
  * 
@@ -16,11 +19,14 @@ public class LinguisticVariableItem
 	private List<FuzzySet> fuzzySetItens;
 	private double maxDomainValue;
 	private String domainType;
+	private static String DOMAIN_VALUE_MULTIPLIFIER;
 
 	public LinguisticVariableItem()
 	{
 		this.linguisticTerms = new ArrayList<String>();
 		this.fuzzySetItens = new ArrayList<FuzzySet>();
+		LinguisticVariableItem.DOMAIN_VALUE_MULTIPLIFIER = FcshsPropertiesLoader.getInstance()
+				.getPropertyByName(FcshsSetupConstants.ITEM_MAX_VALUE_MULTIPLIFIER);
 	}
 
 	public LinguisticVariableItem(String linguisticValiableName, List<String> terms, List<FuzzySet> fuzzySetItens,
@@ -65,7 +71,7 @@ public class LinguisticVariableItem
 
 	public double getMaxDomainValue()
 	{
-		return maxDomainValue * 1.3;
+		return maxDomainValue * Double.parseDouble(DOMAIN_VALUE_MULTIPLIFIER);
 	}
 
 	public void setMaxDomainValue(double maxDomainValue)

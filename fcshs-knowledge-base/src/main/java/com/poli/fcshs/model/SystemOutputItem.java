@@ -14,7 +14,7 @@ public class SystemOutputItem
 	public SystemOutputItem()
 	{
 	}
-	
+
 	public SystemOutputItem(String outputName, double outputValue)
 	{
 		this.outputName = outputName;
