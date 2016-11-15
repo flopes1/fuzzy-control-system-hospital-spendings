@@ -56,7 +56,6 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 						systemInputItem.setInputName(itens.get(count).getIndicatorName().substring(0, itens.get(count).getIndicatorName().lastIndexOf("_")));
 						systemInputItem.setItemTotalAmount(itens.get(count));
 						systemInputItem.setItemUnitaryValue(itens.get(count+1));
-						systemInputItem.setMonth(month.getMonth());
 						this.inputSystemItens.add(systemInputItem);
 						count+=2;
 					}
@@ -69,7 +68,8 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 
 	public List<LinguisticVariableItem> generateSystemLinguisticVariables(String hospitalName){
 		DataTemplateFile dataTemplateFile = this.dataTemplateExtractor.extractDataByName(this.templatesItemName);
-		
+
+		LinguisticVariableItem linguisticVariableItem = new LinguisticVariableItem();
 		for (Hospital hospital : dataTemplateFile.getHospitals()) {
 			if (hospital.getName().equals(hospitalName)) {
 				for (Month month : hospital.getMonths()) {
@@ -77,51 +77,34 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 					for (DataTemplateItem dataTemplateItem : itens) {
 						LinguisticVariableItem linguisticVariable = containsLinguisticVariable(dataTemplateItem.getIndicatorName());
 						if ( linguisticVariable != null) {
-							
-							for (String term : linguisticVariable.getLinguisticTerms()) {
-								for (FuzzySet fuzzySet : linguisticVariable.getFuzzySetItens()) {
-									if (fuzzySet.getFuzzySetName().equals(term)) {
-										fuzzySet.getFuzzySetItens().put(dataTemplateItem.getIndicatorValue(), normalizeFuzzySetValues(dataTemplateItem.getIndicatorValue(),term,linguisticVariable.getMaxDomainValue()));
-									}
-								}
+							FuzzySet fuzzySet = new FuzzySet();
+							fuzzySet.setFuzzySetItens(generateFuzzySet(dataTemplateItem.getIndicatorValue()));
+							linguisticVariable.getFuzzySetItens().add(fuzzySet);
+							if (linguisticVariable.getMaxDomainValue() < (dataTemplateItem.getIndicatorValue() * 1.3)) {
+								linguisticVariable.setMaxDomainValue(dataTemplateItem.getIndicatorValue());
 							}
-							
+
 						} else {
 							linguisticVariable = new LinguisticVariableItem();
 							linguisticVariable.setLinguisticVariableName(dataTemplateItem.getIndicatorName());
-							linguisticVariable.setMaxDomainValue(getMaxValueOfHospital(itens, linguisticVariable.getLinguisticVariableName()));
-							linguisticVariable.setDomainType(dataTemplateItem.getIndicatorName().substring(dataTemplateItem.getIndicatorName().indexOf("_"), dataTemplateItem.getIndicatorName().length()));
-							//O Domaintype a princpio esta sendo atribuido os tipos "QTE" ou "VAL_TOT". 
-							
 							linguisticVariable.setLinguisticTerms(DataBaseGeneratorUtils.getInputTerms());
-							
-							List<FuzzySet> fuzzySetItens = new ArrayList<FuzzySet>();
-							for (String  term: linguisticVariable.getLinguisticTerms()) {
-								fuzzySetItens.add(generateFuzzySet(dataTemplateItem.getIndicatorValue(), term, linguisticVariable.getMaxDomainValue()));
+							FuzzySet fuzzySet = new FuzzySet();
+							fuzzySet.setFuzzySetItens(generateFuzzySet(dataTemplateItem.getIndicatorValue()));
+							linguisticVariable.getFuzzySetItens().add(fuzzySet);
+							if (linguisticVariable.getMaxDomainValue() < (dataTemplateItem.getIndicatorValue() * 1.3)) {
+								linguisticVariable.setMaxDomainValue(dataTemplateItem.getIndicatorValue());
 							}
-							linguisticVariable.setFuzzySetItens(fuzzySetItens);
-							
-							this.linguisticVariableItens.add(linguisticVariable);
+							linguisticVariable.setDomainType(dataTemplateItem.getIndicatorName().substring(dataTemplateItem.getIndicatorName().indexOf("_"), dataTemplateItem.getIndicatorName().length()));
+
+							this.linguisticVariableItens.add(linguisticVariableItem);
 
 						}
+
 					}
 				}
 			}
 		}
 		return this.linguisticVariableItens;
-	}
-	
-	public double getMaxValueOfHospital(List<DataTemplateItem> itens, String linguisticVariableName){
-		double maxValue = 0;
-		
-		for (DataTemplateItem dataTemplateItem : itens) {
-			if (dataTemplateItem.getIndicatorName().equals(linguisticVariableName)) {
-				if (maxValue < (dataTemplateItem.getIndicatorValue() * 1.3)) {
-					maxValue = dataTemplateItem.getIndicatorValue();
-				}
-			}
-		}
-		return maxValue;
 	}
 	
 	public LinguisticVariableItem containsLinguisticVariable (String linguisticVariableItem){
@@ -133,69 +116,17 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 		return null;
 	}
 
-	public FuzzySet generateFuzzySet(double indicatorValue, String term, double maxValue){
-		FuzzySet fuzzySet = new FuzzySet();
-		fuzzySet.setFuzzySetName(term);
+	public HashMap<Double, Double> generateFuzzySet(double indicatorValue){
+		HashMap<Double, Double> fuzzySet = new HashMap<Double, Double>();
 		
-		HashMap<Double, Double> fuzzySetItem = new HashMap<Double, Double>();
-		fuzzySetItem.put(indicatorValue, normalizeFuzzySetValues(indicatorValue,term,maxValue));
-		
-		fuzzySet.setFuzzySetItens(fuzzySetItem);
+		fuzzySet.put(indicatorValue, normalizeFuzzySetValues());
 		
 		return fuzzySet;
 	}
-	
-	public double normalizeFuzzySetValues(double value,String term, double maxValue){
-		double valueNormalized = 0;
-		double leftLimit= 0;
-		double rightLimit= 0;
-		
-		
-		// foram definidas as seguintes regras para o sistema:  
-		// faixa de valores baixos entre 0% ~ 40% (em relação ao valor maximo)
-		// faixa de valores medios entre 30% ~ 70% (em relação ao valor maximo)
-		// faixa de valores altos entre 60% ~ 100% (em relação ao valor maximo)
 
+	public double normalizeFuzzySetValues(){
 		
-		if (term.equalsIgnoreCase("baixo")) {
-			leftLimit = 0;
-			rightLimit = 0.4 * maxValue;
-			if (value < leftLimit || value >  rightLimit) {
-				valueNormalized = 0;
-			}
-			else {
-				valueNormalized = 1 - ( (value - leftLimit) / (rightLimit - leftLimit) );
-				
-			}
-			
-		}
-		if (term.equalsIgnoreCase("medio")) {
-			leftLimit = 0.3 * maxValue;
-			rightLimit = 0.7 * maxValue;
-			
-			if (value < leftLimit || value >  rightLimit) {
-				valueNormalized = 0;
-			}else{
-				if(value/maxValue > 0.5){
-					valueNormalized = 1 - ( (value - leftLimit) / (rightLimit - leftLimit) );
-				}else {
-					valueNormalized = ( (value - leftLimit) / (rightLimit - leftLimit) );
-				}
-			}
-		}
-		if (term.equalsIgnoreCase("alto")) {
-			leftLimit = 0.6 * maxValue;
-			rightLimit = maxValue;
-			
-			if (value < leftLimit || value >  rightLimit) {
-				valueNormalized = 0;
-			}
-			else {
-				valueNormalized = ( (value - leftLimit) / (rightLimit - leftLimit) );
-			}
-		}
-		
-		return valueNormalized;
+		return 0;
 
 	}
 

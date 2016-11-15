@@ -3,7 +3,6 @@ package com.poli.fcshs.generator;
 import java.util.HashMap;
 import java.util.List;
 
-import com.poli.fcshs.model.FuzzySet;
 import com.poli.fcshs.model.LinguisticVariableItem;
 import com.poli.fcshs.model.SystemInputItem;
 
@@ -19,9 +18,9 @@ public interface IKnowledgeBaseGenerator
 	
 	List<LinguisticVariableItem> generateSystemLinguisticVariables(String hospitalName);
 	
-	FuzzySet generateFuzzySet(double indicatorValue, String term, double maxValue);
+	HashMap<Double, Double> generateFuzzySet(double indicatorValue);
 	
-	double normalizeFuzzySetValues(double value,String term, double maxValue);
+	double normalizeFuzzySetValues();
 	
 
 }
