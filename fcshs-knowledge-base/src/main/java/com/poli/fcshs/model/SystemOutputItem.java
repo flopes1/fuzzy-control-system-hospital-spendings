@@ -10,6 +10,7 @@ public class SystemOutputItem
 
 	private String outputName;
 	private double outputValue;
+	private String outputType;
 
 	public SystemOutputItem()
 	{
@@ -39,6 +40,16 @@ public class SystemOutputItem
 	public void setOutputValue(double outputValue)
 	{
 		this.outputValue = outputValue;
+	}
+
+	public String getOutputType()
+	{
+		return outputType;
+	}
+
+	public void setOutputType(String outputType)
+	{
+		this.outputType = outputType;
 	}
 
 }
