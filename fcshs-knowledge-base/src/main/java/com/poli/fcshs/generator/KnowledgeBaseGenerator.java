@@ -39,6 +39,11 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 		this.inputSystemItens = new ArrayList<SystemInputItem>();
 	}
 
+	public KnowledgeBaseGenerator()
+	{
+		this("");
+	}
+
 	public List<SystemInputItem> generateSystemInputItens(String hospitalName)
 	{
 		int count;
