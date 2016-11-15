@@ -3,33 +3,36 @@ package com.poli.fcshs.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RuleModel
+public class SystemRules
 {
 
-	private List <String> operands ;
-	private List <String> operators ;
+	private List<String> operands;
+	private List<String> operators;
 	private String output;
-	
-	public RuleModel()
+
+	public SystemRules()
 	{
 		operands = new ArrayList<String>();
 		operators = new ArrayList<String>();
-		
+
 	}
-	
-	public List <String> getOperands()
+
+	public List<String> getOperands()
 	{
 		return operands;
 	}
-	public void setOperands(List <String> operands)
+
+	public void setOperands(List<String> operands)
 	{
 		this.operands = operands;
 	}
-	public List <String> getOperators()
+
+	public List<String> getOperators()
 	{
 		return operators;
 	}
-	public void setOperators(List <String> operators)
+
+	public void setOperators(List<String> operators)
 	{
 		this.operators = operators;
 	}
@@ -43,5 +46,5 @@ public class RuleModel
 	{
 		this.output = output;
 	}
-	
+
 }
