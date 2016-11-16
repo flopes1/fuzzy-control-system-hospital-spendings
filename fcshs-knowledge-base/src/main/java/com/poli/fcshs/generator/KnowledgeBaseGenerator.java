@@ -29,6 +29,15 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 	private DataTemplateExtractor dataTemplateExtractor;
 	private List<LinguisticVariableItem> linguisticVariableItens;
 	private List<SystemInputItem> inputSystemItens;
+	
+	public List<SystemInputItem> getInputSystemItens() {
+		return inputSystemItens;
+	}
+
+	public void setInputSystemItens(List<SystemInputItem> inputSystemItens) {
+		this.inputSystemItens = inputSystemItens;
+	}
+
 	private static double DOMAIN_VALUE_MULTIPLIFIER = Double.valueOf(
 			FcshsPropertiesLoader.getInstance().getPropertyByName(FcshsSetupConstants.ITEM_MAX_VALUE_MULTIPLIFIER));
 	

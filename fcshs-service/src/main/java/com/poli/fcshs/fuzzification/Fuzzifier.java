@@ -1,25 +1,65 @@
 package com.poli.fcshs.fuzzification;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.poli.fcshs.generator.KnowledgeBaseGenerator;
 import com.poli.fcshs.model.FuzzySet;
+import com.poli.fcshs.model.LinguisticVariableItem;
+import com.poli.fcshs.model.SystemInputItem;
 
 public class Fuzzifier implements IFuzzifier{
 
 	private KnowledgeBaseGenerator fuzzificationLinguisticVariable;
+	private List<LinguisticVariableItem> linguisticVariableItens; 
 	
 	public Fuzzifier(String hospitalName, String templateYear)
 	{
 		this.fuzzificationLinguisticVariable.generateSystemInputItensByYear(hospitalName, templateYear);
+//		this.linguisticVariableItens = this.fuzzificationLinguisticVariable.generateSystemLinguisticVariables();
 		
 	}
 	
 	public Fuzzifier(String hospitalName)
 	{
 		this.fuzzificationLinguisticVariable.generateSystemInputItens(hospitalName);
+//		this.linguisticVariableItens = this.fuzzificationLinguisticVariable.generateSystemLinguisticVariables();
 		
 	}
+	
+	public List<LinguisticVariableItem> getListLinguisticVariable(){
+		
+		for (SystemInputItem systemInputItem : fuzzificationLinguisticVariable.getInputSystemItens()) {
+			LinguisticVariableItem linguisticVariableItem;
+			
+			linguisticVariableItem = getLinguisticVariableByName(systemInputItem.getItemTotalAmountName());
+			if (linguisticVariableItem != null) {
+				for (String term : linguisticVariableItem.getLinguisticTerms()) {
+					linguisticVariableItem.getFuzzySetItens().add(generateFuzzySet(systemInputItem.getItemTotalAmountValue(), term, linguisticVariableItem.getMaxDomainValue()));
+				}
+			}
+			
+			linguisticVariableItem = getLinguisticVariableByName(systemInputItem.getItemUnitaryName());
+			if (linguisticVariableItem != null) {
+				for (String term : linguisticVariableItem.getLinguisticTerms()) {
+					linguisticVariableItem.getFuzzySetItens().add(generateFuzzySet(systemInputItem.getItemUnitaryValue(), term, linguisticVariableItem.getMaxDomainValue()));
+				}
+			}
+			
+		}
+		
+		return this.linguisticVariableItens;
+	}
+	
+	public LinguisticVariableItem getLinguisticVariableByName(String name){
+		for (LinguisticVariableItem linguisticVariableItem : linguisticVariableItens) {
+			if (linguisticVariableItem.getLinguisticVariableName().equals(name)) {
+				return linguisticVariableItem;
+			}
+		}
+		return null;
+	}
+	
 	
 	public double normalizeFuzzySetValues(double value,String term, double maxValue){
 		double valueNormalized = 0;
