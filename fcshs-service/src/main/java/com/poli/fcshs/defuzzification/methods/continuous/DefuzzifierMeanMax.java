@@ -65,7 +65,11 @@ public class DefuzzifierMeanMax extends DefuzzifierContinuousSet
 
 		for (Double keySet : this.getGenericFuncionDomain().keySet())
 		{
-			maxValue += this.getGenericFuncionDomain().get(keySet);
+			double currentValue = this.getGenericFuncionDomain().get(keySet);
+			if (currentValue > maxValue)
+			{
+				maxValue = currentValue;
+			}
 		}
 
 		return maxValue;
