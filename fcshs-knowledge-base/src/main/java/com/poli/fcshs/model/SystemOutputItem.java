@@ -51,5 +51,12 @@ public class SystemOutputItem
 	{
 		this.outputType = outputType;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "System output variable name: " + this.outputName + "\n" +
+				"Result: " + this.outputValue + " " + this.outputType;
+	}
 
 }
