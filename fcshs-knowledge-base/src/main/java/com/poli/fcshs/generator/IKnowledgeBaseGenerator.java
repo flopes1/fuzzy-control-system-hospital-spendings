@@ -1,6 +1,5 @@
 package com.poli.fcshs.generator;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.poli.fcshs.model.LinguisticVariableItem;
@@ -18,9 +17,5 @@ public interface IKnowledgeBaseGenerator
 	
 	List<LinguisticVariableItem> generateSystemLinguisticVariables(String hospitalName);
 	
-	HashMap<Double, Double> generateFuzzySet(double indicatorValue);
-	
-	double normalizeFuzzySetValues();
-	
-
+	List<SystemInputItem> generateSystemInputItensByYear(String hospitalName, String year);
 }

@@ -14,7 +14,7 @@ public class SystemInputItem
 	private DataTemplateItem itemTotalAmount;
 	private DataTemplateItem itemTotalValue;
 	private DataTemplateItem valueUnit;
-	private int month;
+	private double month;
 
 	public SystemInputItem()
 	{
@@ -30,12 +30,12 @@ public class SystemInputItem
 		this.valueUnit.setIndicatorName(inputName + "_VAL_UNIT");
 	}
 
-	public int getMonth()
+	public double getMonth()
 	{
 		return month;
 	}
 
-	public void setMonth(int month)
+	public void setMonth(double month)
 	{
 		this.month = month;
 	}
