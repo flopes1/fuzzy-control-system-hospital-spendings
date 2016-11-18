@@ -29,5 +29,6 @@ public class DefuzzifierCenterOfGravityTest
 		assertTrue(defuzziResult != null);
 		System.out.println(defuzziResult);
 	}
+	
 
 }

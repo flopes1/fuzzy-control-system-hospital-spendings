@@ -15,12 +15,14 @@ public class Fuzzifier implements IFuzzifier{
 	
 	public Fuzzifier(String hospitalName, String templateYear)
 	{
+		this.fuzzificationLinguisticVariable = new KnowledgeBaseGenerator();
 		this.fuzzificationLinguisticVariable.generateSystemInputItensByYear(hospitalName, templateYear);
 		this.linguisticVariableItens = this.fuzzificationLinguisticVariable.generateSystemLinguisticVariables(hospitalName);
 	}
 	
 	public Fuzzifier(String hospitalName)
 	{
+		this.fuzzificationLinguisticVariable = new KnowledgeBaseGenerator();
 		this.fuzzificationLinguisticVariable.generateSystemInputItens(hospitalName);
 		this.linguisticVariableItens = this.fuzzificationLinguisticVariable.generateSystemLinguisticVariables(hospitalName);
 	}
