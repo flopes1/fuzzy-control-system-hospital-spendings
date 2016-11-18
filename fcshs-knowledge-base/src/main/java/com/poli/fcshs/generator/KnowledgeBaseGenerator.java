@@ -159,5 +159,13 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 		}
 		return null;
 	}
+	
+	public List<SystemInputItem> getInputSystemItens() {
+		return inputSystemItens;
+	}
+
+	public void setInputSystemItens(List<SystemInputItem> inputSystemItens) {
+		this.inputSystemItens = inputSystemItens;
+	}
 
 }
