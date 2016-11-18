@@ -14,6 +14,10 @@ public abstract class Defuzzifier implements IDefuzzifier
 	private String defuzzifierTypeName;
 	private boolean defuzzifierDiscrete;
 
+	public Defuzzifier()
+	{
+	}
+
 	public Defuzzifier(String deffuziType, LinguisticVariableItem outputInferenceItem, boolean isDiscret)
 	{
 		this.defuzzifierTypeName = deffuziType;

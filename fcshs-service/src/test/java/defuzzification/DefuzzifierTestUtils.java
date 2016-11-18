@@ -37,7 +37,7 @@ public class DefuzzifierTestUtils
 
 		HashMap<Double, Double> pertinenceFunction = new HashMap<Double, Double>();
 
-		for (int i = 0; i <= 100; i += 2)
+		for (int i = 0; i <= 100; i += 1)
 		{
 			pertinenceFunction.put((double) i, getNormalizedValue(i));
 		}

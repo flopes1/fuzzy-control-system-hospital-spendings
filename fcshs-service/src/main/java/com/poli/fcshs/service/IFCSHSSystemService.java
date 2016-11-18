@@ -8,12 +8,8 @@ package com.poli.fcshs.service;
 public interface IFCSHSSystemService
 {
 
+	String getSystemAnalysisByHospital(String hospitalName, String year);
+
 	String getSystemAnalysisByHospital(String hospitalName);
-
-	String getSystemAnalysisByYear(String year);
-
-	String getSystemAnalysisAllYears();
-
-	String getSystemAnalysisAllHospitalYears();
 
 }
