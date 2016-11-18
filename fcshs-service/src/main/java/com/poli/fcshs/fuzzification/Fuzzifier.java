@@ -15,7 +15,7 @@ public class Fuzzifier implements IFuzzifier{
 	
 	public Fuzzifier(String hospitalName, String templateYear)
 	{
-		this.fuzzificationLinguisticVariable = new KnowledgeBaseGenerator();
+		this.fuzzificationLinguisticVariable = new KnowledgeBaseGenerator(templateYear);
 		this.fuzzificationLinguisticVariable.generateSystemInputItensByYear(hospitalName, templateYear);
 		this.linguisticVariableItens = this.fuzzificationLinguisticVariable.generateSystemLinguisticVariables(hospitalName);
 	}
@@ -82,6 +82,8 @@ public class Fuzzifier implements IFuzzifier{
 		double valueNormalized = 0;
 		double leftLimit= 0;
 		double rightLimit= 0;
+		
+		maxValue/= 1.3;
 		
 		
 		// foram definidas as seguintes regras para o sistema:  

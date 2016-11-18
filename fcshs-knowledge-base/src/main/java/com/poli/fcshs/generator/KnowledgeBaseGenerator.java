@@ -117,20 +117,21 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 					List<DataTemplateItem> itens = month.getDataTemplateItens();
 					for (DataTemplateItem dataTemplateItem : itens) {
 						LinguisticVariableItem linguisticVariable = containsLinguisticVariable(dataTemplateItem.getIndicatorName());
-						linguisticVariable = new LinguisticVariableItem();
-						linguisticVariable.setLinguisticVariableName(dataTemplateItem.getIndicatorName());
-						linguisticVariable.setMaxDomainValue(getMaxValueOfHospital(itens, linguisticVariable.getLinguisticVariableName()));
-						linguisticVariable.setDomainType(dataTemplateItem.getIndicatorName().substring(dataTemplateItem.getIndicatorName().indexOf("_"), dataTemplateItem.getIndicatorName().length()));
-						//O Domaintype a princpio esta sendo atribuido os tipos "QTE" ou "VAL_TOT". 
-
-						linguisticVariable.setLinguisticTerms(DataBaseGeneratorUtils.getInputTerms());
-
-						List<FuzzySet> fuzzySetItens = new ArrayList<FuzzySet>();
-
-						linguisticVariable.setFuzzySetItens(fuzzySetItens);
-
-						this.linguisticVariableItens.add(linguisticVariable);
-
+						if (linguisticVariable == null) {
+							linguisticVariable = new LinguisticVariableItem();
+							linguisticVariable.setLinguisticVariableName(dataTemplateItem.getIndicatorName());
+							linguisticVariable.setMaxDomainValue(getMaxValueOfHospital(itens, linguisticVariable.getLinguisticVariableName()));
+							linguisticVariable.setDomainType(dataTemplateItem.getIndicatorName().substring(dataTemplateItem.getIndicatorName().indexOf("_"), dataTemplateItem.getIndicatorName().length()));
+							//O Domaintype a princpio esta sendo atribuido os tipos "QTE" ou "VAL_TOT". 
+							
+							linguisticVariable.setLinguisticTerms(DataBaseGeneratorUtils.getInputTerms());
+							
+							List<FuzzySet> fuzzySetItens = new ArrayList<FuzzySet>();
+							
+							linguisticVariable.setFuzzySetItens(fuzzySetItens);
+							
+							this.linguisticVariableItens.add(linguisticVariable);
+						}
 					}
 				}
 			}
