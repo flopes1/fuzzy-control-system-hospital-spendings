@@ -115,18 +115,152 @@ public class Inference implements IInference
 			//percorre todos os fuzzyset da variavel de saída para preencher os valores que foram encontrados nas operações com conjuntos
 			for (FuzzySet fuzzySet : variableItem.getFuzzySetItens()){
 				String[] variableLinguisticName = systemRules.getOutput().split(",");
+				//se o nome (termo) do fuzzyset de saida for igual ao nome (termo) da conclusao da regra
 				if (fuzzySet.getFuzzySetName().equals(variableLinguisticName[1]))
 				{
-					//no hashmap pode substituir um valor que já tinha, não criando um novo.
-					fuzzySet.getFuzzySetItens().put(before, before);
+					//se o nome (termo) do fuzzyset de saida for igual a baixo, é mapeado com chaves de 0 a 100
+					//os valores correspondentes a função de pertinencia(de baixo), nao podendo ser maior que o 
+					//resultado calculado da regra.
+					if (fuzzySet.getFuzzySetName().equals(DataBaseGeneratorUtils.getOutputTerms().get(0)))
+					{
+						for (Double i = 0.0; i <= 100.0; i+=0.5)
+						{
+							Double value = normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
+							if (before > value)
+							{
+								fuzzySet.getFuzzySetItens().put(i, value);
+							}else {
+								fuzzySet.getFuzzySetItens().put(i, before);
+							}
+						}
+						//mesmo mapeamento, só que pra medio.
+					}else if (fuzzySet.getFuzzySetName().equals(DataBaseGeneratorUtils.getOutputTerms().get(1))) {
+						
+						for (Double i = 0.0; i <= 100.0; i+=0.5)
+						{
+							Double value = normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
+							if (before > value)
+							{
+								fuzzySet.getFuzzySetItens().put(i, value);
+							}else {
+								fuzzySet.getFuzzySetItens().put(i, before);
+							}
+						}
+						//mesmo mapeamento só que pra alto.
+					}else
+					{
+						for (Double i = 0.0; i <= 100.0; i+=0.5)
+						{
+							Double value = normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
+							if (before > value)
+							{
+								fuzzySet.getFuzzySetItens().put(i, value);
+							}else {
+								fuzzySet.getFuzzySetItens().put(i, before);
+							}
+						}
+						
+					}
 					
 				}
 			}
 			
 		}
 		
+		
+		HashMap<Double, Double> baixo = variableItem.getFuzzySetItens().get(0).getFuzzySetItens();
+		HashMap<Double, Double> medio = variableItem.getFuzzySetItens().get(1).getFuzzySetItens();
+		HashMap<Double, Double> alto = variableItem.getFuzzySetItens().get(2).getFuzzySetItens();
+		HashMap<Double, Double> resultHashMap = new HashMap<Double, Double>();
+		
+		Double resultvalue;
+		
+		// É calculado um hashMap que tenha a combinação dos hashMaps baixo,medio e alto 
+		//(pegando o maior valor para determinada key entre os três hashMaps)
+		for (Double i = 0.0; i <= 100.0; i+=0.5)
+		{
+			resultvalue = 0.0;
+			
+			if (baixo.get(i) > medio.get(i) && baixo.get(i) > alto.get(i))
+			{
+				resultvalue = baixo.get(i);			                      
+			}else if (medio.get(i) > alto.get(i))
+			{		               
+				resultvalue = medio.get(i);
+			}else
+			{
+				resultvalue = alto.get(i);
+			}
+			
+			resultHashMap.put(i, resultvalue);
+		}
+		
+		//cria uma nova lista de fuzzyset para substituir na variavel variableItem.
+		FuzzySet finalFuzzySet = new FuzzySet();
+		finalFuzzySet.setFuzzySetItens(resultHashMap);
+		//mudar nome depois.
+		finalFuzzySet.setFuzzySetName("indice");
+		List<FuzzySet> fuzzySetList = new ArrayList<FuzzySet>();
+		fuzzySetList.add(finalFuzzySet);
+		
+		variableItem.setFuzzySetItens(fuzzySetList);
+		
 		return variableItem;
 		
 	} 
+	
+	public double normalizeFuzzySetValues(double value,String term, double maxValue){
+		double valueNormalized = 0;
+		double leftLimit= 0;
+		double rightLimit= 0;
+		
+		
+		// foram definidas as seguintes regras para o sistema:  
+		// faixa de valores baixos entre 0% ~ 40% (em relação ao valor maximo)
+		// faixa de valores medios entre 30% ~ 70% (em relação ao valor maximo)
+		// faixa de valores altos entre 60% ~ 100% (em relação ao valor maximo)
+
+		
+		if (term.equalsIgnoreCase("baixo")) {
+			leftLimit = 0;
+			rightLimit = 0.4 * maxValue;
+			if (value < leftLimit || value >  rightLimit) {
+				valueNormalized = 0;
+			}
+			else {
+				valueNormalized = 1 - ( (value - leftLimit) / (rightLimit - leftLimit) );
+				
+			}
+			
+		}
+		if (term.equalsIgnoreCase("medio")) {
+			leftLimit = 0.3 * maxValue;
+			rightLimit = 0.7 * maxValue;
+			
+			if (value < leftLimit || value >  rightLimit) {
+				valueNormalized = 0;
+			}else{
+				if(value/maxValue > 0.5){
+					valueNormalized = 1 - ( (value - leftLimit) / (rightLimit - leftLimit) );
+				}else {
+					valueNormalized = ( (value - leftLimit) / (rightLimit - leftLimit) );
+				}
+			}
+		}
+		if (term.equalsIgnoreCase("alto")) {
+			leftLimit = 0.6 * maxValue;
+			rightLimit = maxValue;
+			
+			if (value < leftLimit || value >  rightLimit) {
+				valueNormalized = 0;
+			}
+			else {
+				valueNormalized = ( (value - leftLimit) / (rightLimit - leftLimit) );
+			}
+		}
+		
+		return valueNormalized;
+
+	}
 	
 }
