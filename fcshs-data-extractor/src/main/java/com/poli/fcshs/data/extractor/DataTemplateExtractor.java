@@ -162,7 +162,7 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 		int startLine = 0, endLine = 0, counter = -1;
 		String[] result = null;
 
-		for (int i = 0; i < nextLine.length - 1; i++)
+		for (int i = 0; i < nextLine.length -1 ; i++)
 		{
 
 			if (nextLine[i].contains("#"))
@@ -178,7 +178,7 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 				}
 				else
 				{
-					endLine = i;
+					endLine = i+1;
 				}
 				counter++;
 			}
