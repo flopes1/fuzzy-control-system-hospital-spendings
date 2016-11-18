@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.poli.fcshs.fuzzification.Fuzzifier;
 import com.poli.fcshs.generator.util.DataBaseGeneratorUtils;
 import com.poli.fcshs.model.FuzzySet;
 import com.poli.fcshs.model.LinguisticVariableItem;
@@ -13,7 +14,6 @@ import com.poli.fcshs.rules.ExtractorRules;
 public class Inference implements IInference
 {
 	ExtractorRules rules;
-	
 	
 	public Inference()
 	{
@@ -213,6 +213,8 @@ public class Inference implements IInference
 		double valueNormalized = 0;
 		double leftLimit= 0;
 		double rightLimit= 0;
+		
+		maxValue/= 1.3;
 		
 		
 		// foram definidas as seguintes regras para o sistema:  

@@ -1,4 +1,4 @@
-package defuzzification;
+package fuzzifier;
 
 import static org.junit.Assert.assertTrue;
 
