@@ -1,11 +1,15 @@
 package com.poli.fcshs.service.impl;
 
+import java.util.List;
+
 import com.poli.fcshs.config.FcshsConstants;
 import com.poli.fcshs.config.FcshsPropertiesLoader;
 import com.poli.fcshs.config.FcshsSetupConstants;
 import com.poli.fcshs.defuzzification.Defuzzifier;
 import com.poli.fcshs.defuzzification.methods.continuous.DefuzzifierMeanMax;
 import com.poli.fcshs.defuzzification.methods.discrete.DefuzzifierCenterOfGravity;
+import com.poli.fcshs.fuzzification.Fuzzifier;
+import com.poli.fcshs.inference.Inference;
 import com.poli.fcshs.model.LinguisticVariableItem;
 import com.poli.fcshs.model.SystemOutputItem;
 import com.poli.fcshs.service.IFCSHSSystemService;
@@ -22,8 +26,8 @@ public class FCSHSSystemService implements IFCSHSSystemService
 	 * System functional variables
 	 */
 
-	// fuzzi attribute
-	// inference attribute
+	private Fuzzifier fuzzification;
+	private Inference inference;
 	private Defuzzifier defuzziMethod;
 
 	/*
@@ -42,9 +46,15 @@ public class FCSHSSystemService implements IFCSHSSystemService
 		// pega o retorno e passa para a inferencia que trata um hospital e um
 		// ano
 		// seta o retorno da inferencia na variavel abaixo
-		LinguisticVariableItem inferenceOutput = null;
-
-		this.initializeDefuzzification(inferenceOutput);
+		
+		this.initializeFuzzification(hospitalName, year);
+		this.initializeInference();
+		
+		List<LinguisticVariableItem> linguisticVariableItens = this.fuzzification.getListlinguisticVariablewWithValues();
+		LinguisticVariableItem lisguisticVariableItem = inference.inference(linguisticVariableItens);
+		
+		this.initializeDefuzzification(lisguisticVariableItem);
+		
 		SystemOutputItem defuzziOutput = this.defuzziMethod.defuzzify();
 
 		return defuzziOutput.toString();
@@ -57,12 +67,28 @@ public class FCSHSSystemService implements IFCSHSSystemService
 		// pega o retorno e passa para a inferencia que trata um só hospital em
 		// todos os anos
 		// seta o retorno da inferencia na variavel abaixo
-		LinguisticVariableItem inferenceOutput = null;
-
-		this.initializeDefuzzification(inferenceOutput);
+		this.initializeFuzzification(hospitalName);
+		this.initializeInference();
+		
+		List<LinguisticVariableItem> linguisticVariableItens = this.fuzzification.getListlinguisticVariablewWithValues();
+		LinguisticVariableItem lisguisticVariableItem = inference.inference(linguisticVariableItens);
+		
+		this.initializeDefuzzification(lisguisticVariableItem);
 		SystemOutputItem defuzziOutput = this.defuzziMethod.defuzzify();
 
 		return defuzziOutput.toString();
+	}
+	
+	private void initializeInference(){
+		this.inference =  new Inference();
+	}
+	
+	private void initializeFuzzification(String hospitalName, String year){
+		this.fuzzification = new Fuzzifier(hospitalName, year);
+	}
+	
+	private void initializeFuzzification(String hospitalName){
+		this.fuzzification = new Fuzzifier(hospitalName);
 	}
 
 	private void initializeDefuzzification(LinguisticVariableItem outputInferenceItem)

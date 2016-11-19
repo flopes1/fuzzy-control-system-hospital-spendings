@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.poli.fcshs.fuzzification.Fuzzifier;
+import com.poli.fcshs.fuzzification.util.FuzzifierUtils;
 import com.poli.fcshs.generator.util.DataBaseGeneratorUtils;
 import com.poli.fcshs.model.FuzzySet;
 import com.poli.fcshs.model.LinguisticVariableItem;
@@ -65,14 +66,21 @@ public class Inference implements IInference
 						for (FuzzySet fuzzySet : fuzzySetList)
 						{
 							Double average = 0.0;
+							int count=0;
 							//pega todas as keys
 							 for (Double key : fuzzySet.getFuzzySetItens().keySet()) {
-			                      //soma todos os valores associados a cada key
-								 	average += fuzzySet.getFuzzySetItens().get(key);
+			                      
+								 if (fuzzySet.getFuzzySetItens().get(key)>0)
+								{
+									 //soma todos os valores (maior que zero) associados a cada key
+									 	average += fuzzySet.getFuzzySetItens().get(key);
+									 	count++;
+								}
+								
 			                      
 							 }
 							 //divide a soma de todos os valores pelo numero de itens para obter a média
-							 average /= fuzzySet.getFuzzySetItens().size();
+							 average /= count;
 							 
 							 //verifica se o termo da regra é igual ao nome termo do fuzzyset
 							 String[] variableLinguisticName = systemRules.getOutput().split(",");
@@ -125,7 +133,7 @@ public class Inference implements IInference
 					{
 						for (Double i = 0.0; i <= 100.0; i+=0.5)
 						{
-							Double value = normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
+							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
 							if (before > value)
 							{
 								fuzzySet.getFuzzySetItens().put(i, value);
@@ -138,7 +146,7 @@ public class Inference implements IInference
 						
 						for (Double i = 0.0; i <= 100.0; i+=0.5)
 						{
-							Double value = normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
+							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
 							if (before > value)
 							{
 								fuzzySet.getFuzzySetItens().put(i, value);
@@ -151,7 +159,7 @@ public class Inference implements IInference
 					{
 						for (Double i = 0.0; i <= 100.0; i+=0.5)
 						{
-							Double value = normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
+							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
 							if (before > value)
 							{
 								fuzzySet.getFuzzySetItens().put(i, value);
@@ -209,60 +217,6 @@ public class Inference implements IInference
 		
 	} 
 	
-	public double normalizeFuzzySetValues(double value,String term, double maxValue){
-		double valueNormalized = 0;
-		double leftLimit= 0;
-		double rightLimit= 0;
-		
-		maxValue/= 1.3;
-		
-		
-		// foram definidas as seguintes regras para o sistema:  
-		// faixa de valores baixos entre 0% ~ 40% (em relação ao valor maximo)
-		// faixa de valores medios entre 30% ~ 70% (em relação ao valor maximo)
-		// faixa de valores altos entre 60% ~ 100% (em relação ao valor maximo)
 
-		
-		if (term.equalsIgnoreCase("baixo")) {
-			leftLimit = 0;
-			rightLimit = 0.4 * maxValue;
-			if (value < leftLimit || value >  rightLimit) {
-				valueNormalized = 0;
-			}
-			else {
-				valueNormalized = 1 - ( (value - leftLimit) / (rightLimit - leftLimit) );
-				
-			}
-			
-		}
-		if (term.equalsIgnoreCase("medio")) {
-			leftLimit = 0.3 * maxValue;
-			rightLimit = 0.7 * maxValue;
-			
-			if (value < leftLimit || value >  rightLimit) {
-				valueNormalized = 0;
-			}else{
-				if(value/maxValue > 0.5){
-					valueNormalized = 1 - ( (value - leftLimit) / (rightLimit - leftLimit) );
-				}else {
-					valueNormalized = ( (value - leftLimit) / (rightLimit - leftLimit) );
-				}
-			}
-		}
-		if (term.equalsIgnoreCase("alto")) {
-			leftLimit = 0.6 * maxValue;
-			rightLimit = maxValue;
-			
-			if (value < leftLimit || value >  rightLimit) {
-				valueNormalized = 0;
-			}
-			else {
-				valueNormalized = ( (value - leftLimit) / (rightLimit - leftLimit) );
-			}
-		}
-		
-		return valueNormalized;
-
-	}
 	
 }
