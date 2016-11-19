@@ -120,7 +120,7 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 						if (linguisticVariable == null) {
 							linguisticVariable = new LinguisticVariableItem();
 							linguisticVariable.setLinguisticVariableName(dataTemplateItem.getIndicatorName());
-							linguisticVariable.setMaxDomainValue(getMaxValueOfHospital(itens, linguisticVariable.getLinguisticVariableName()));
+							linguisticVariable.setMaxDomainValue(getMaxValueOfHospital(hospital.getMonths(), linguisticVariable.getLinguisticVariableName()));
 							linguisticVariable.setDomainType(dataTemplateItem.getIndicatorName().substring(dataTemplateItem.getIndicatorName().indexOf("_"), dataTemplateItem.getIndicatorName().length()));
 							//O Domaintype a princpio esta sendo atribuido os tipos "QTE" ou "VAL_TOT". 
 							
@@ -139,13 +139,14 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 		return this.linguisticVariableItens;
 	}
 	
-	public double getMaxValueOfHospital(List<DataTemplateItem> itens, String linguisticVariableName){
+	public double getMaxValueOfHospital(List<Month> months, String linguisticVariableName){
 		double maxValue = 0;
-		
-		for (DataTemplateItem dataTemplateItem : itens) {
-			if (dataTemplateItem.getIndicatorName().equals(linguisticVariableName)) {
-				if (maxValue < (dataTemplateItem.getIndicatorValue() * DOMAIN_VALUE_MULTIPLIFIER)) {
-					maxValue = dataTemplateItem.getIndicatorValue();
+		for (Month month : months) {
+			for (DataTemplateItem dataTemplateItem : month.getDataTemplateItens()) {
+				if (dataTemplateItem.getIndicatorName().equals(linguisticVariableName)) {
+					if (maxValue < dataTemplateItem.getIndicatorValue()) {
+						maxValue = dataTemplateItem.getIndicatorValue();
+					}
 				}
 			}
 		}
