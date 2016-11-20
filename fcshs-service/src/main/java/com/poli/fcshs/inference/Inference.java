@@ -70,7 +70,7 @@ public class Inference implements IInference
 							//pega todas as keys
 							 for (Double key : fuzzySet.getFuzzySetItens().keySet()) {
 			                      
-								 if (fuzzySet.getFuzzySetItens().get(key)>0)
+								 if (fuzzySet.getFuzzySetItens().get(key)>=0)
 								{
 									 //soma todos os valores (maior que zero) associados a cada key
 									 	average += fuzzySet.getFuzzySetItens().get(key);

@@ -8,7 +8,7 @@ public class FuzzifierUtils
 		double leftLimit= 0;
 		double rightLimit= 0;
 		
-		maxValue/= 1.3;
+//		maxValue/= 1.3;
 		
 		
 		// foram definidas as seguintes regras para o sistema:  
