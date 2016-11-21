@@ -56,7 +56,7 @@ public class SystemOutputItem
 	public String toString()
 	{
 		return "System output variable name: " + this.outputName + "\n" +
-				"Result: " + this.outputValue + " " + this.outputType;
+				" Result: " + this.outputValue + " " + this.outputType;
 	}
 
 }
