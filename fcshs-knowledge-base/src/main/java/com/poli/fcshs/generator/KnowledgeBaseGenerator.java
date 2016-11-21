@@ -26,6 +26,7 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 {
 
 	private String templatesItemName;
+	private List<DataTemplateFile> allDataTemplateFile;
 	private DataTemplateExtractor dataTemplateExtractor;
 	private List<LinguisticVariableItem> linguisticVariableItens;
 	private List<SystemInputItem> inputSystemItens;
@@ -43,6 +44,7 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 		this.dataTemplateExtractor = new DataTemplateExtractor();
 		this.linguisticVariableItens = new ArrayList<LinguisticVariableItem>();
 		this.inputSystemItens = new ArrayList<SystemInputItem>();
+		this.allDataTemplateFile = new ArrayList<DataTemplateFile>();
 		
 	}
 	
@@ -56,21 +58,23 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 	
 	public List<SystemInputItem> generateSystemInputItensByYear(String hospitalName, String year){
 		int count;
-		DataTemplateFile dataTemplateFile = this.dataTemplateExtractor.extractDataByName(year);
+		this.allDataTemplateFile.add(this.dataTemplateExtractor.extractDataByName(year));  
 		
-		for (Hospital hospital : dataTemplateFile.getHospitals()) {
-			if (hospital.getName().equals(hospitalName)) {
-				for (Month month : hospital.getMonths()) {
-					count = 0;
-					List<DataTemplateItem> itens = month.getDataTemplateItens();
-					while(count < itens.size()){
-						SystemInputItem systemInputItem = new SystemInputItem();
-						systemInputItem.setInputName(itens.get(count).getIndicatorName().substring(0, itens.get(count).getIndicatorName().lastIndexOf("_")));
-						systemInputItem.setItemTotalAmount(itens.get(count));
-						systemInputItem.setItemUnitaryValue(itens.get(count+1));
-						systemInputItem.setMonth(month.getMonth());
-						this.inputSystemItens.add(systemInputItem);
-						count+=2;
+		for (DataTemplateFile dataTemplateFile : allDataTemplateFile) {
+			for (Hospital hospital : dataTemplateFile.getHospitals()) {
+				if (hospital.getName().equals(hospitalName)) {
+					for (Month month : hospital.getMonths()) {
+						count = 0;
+						List<DataTemplateItem> itens = month.getDataTemplateItens();
+						while(count < itens.size()){
+							SystemInputItem systemInputItem = new SystemInputItem();
+							systemInputItem.setInputName(itens.get(count).getIndicatorName().substring(0, itens.get(count).getIndicatorName().lastIndexOf("_")));
+							systemInputItem.setItemTotalAmount(itens.get(count));
+							systemInputItem.setItemUnitaryValue(itens.get(count+1));
+							systemInputItem.setMonth(month.getMonth());
+							this.inputSystemItens.add(systemInputItem);
+							count+=2;
+						}
 					}
 				}
 			}
@@ -82,7 +86,7 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 	
 	public List<SystemInputItem> generateSystemInputItens(String hospitalName){
 		int count;
-		List<DataTemplateFile> allDataTemplateFile = this.dataTemplateExtractor.extractAllData();
+		this.allDataTemplateFile = this.dataTemplateExtractor.extractAllData();
 		
 		for (DataTemplateFile dataTemplateFile : allDataTemplateFile) {
 			for (Hospital hospital : dataTemplateFile.getHospitals()) {
@@ -109,28 +113,29 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 
 	//OBS: Alterar para utilizar lista de inputSystemItens (melhora de codigo)
 	public List<LinguisticVariableItem> generateSystemLinguisticVariables(String hospitalName){
-		DataTemplateFile dataTemplateFile = this.dataTemplateExtractor.extractDataByName(this.templatesItemName);
 		
-		for (Hospital hospital : dataTemplateFile.getHospitals()) {
-			if (hospital.getName().equals(hospitalName)) {
-				for (Month month : hospital.getMonths()) {
-					List<DataTemplateItem> itens = month.getDataTemplateItens();
-					for (DataTemplateItem dataTemplateItem : itens) {
-						LinguisticVariableItem linguisticVariable = containsLinguisticVariable(dataTemplateItem.getIndicatorName());
-						if (linguisticVariable == null) {
-							linguisticVariable = new LinguisticVariableItem();
-							linguisticVariable.setLinguisticVariableName(dataTemplateItem.getIndicatorName());
-							linguisticVariable.setMaxDomainValue(getMaxValueOfHospital(hospital.getMonths(), linguisticVariable.getLinguisticVariableName()));
-							linguisticVariable.setDomainType(dataTemplateItem.getIndicatorName().substring(dataTemplateItem.getIndicatorName().indexOf("_"), dataTemplateItem.getIndicatorName().length()));
-							//O Domaintype a princpio esta sendo atribuido os tipos "QTE" ou "VAL_TOT". 
-							
-							linguisticVariable.setLinguisticTerms(DataBaseGeneratorUtils.getInputTerms());
-							
-							List<FuzzySet> fuzzySetItens = new ArrayList<FuzzySet>();
-							
-							linguisticVariable.setFuzzySetItens(fuzzySetItens);
-							
-							this.linguisticVariableItens.add(linguisticVariable);
+		for (DataTemplateFile dataTemplateFile : this.allDataTemplateFile) {
+			for (Hospital hospital : dataTemplateFile.getHospitals()) {
+				if (hospital.getName().equals(hospitalName)) {
+					for (Month month : hospital.getMonths()) {
+						List<DataTemplateItem> itens = month.getDataTemplateItens();
+						for (DataTemplateItem dataTemplateItem : itens) {
+							LinguisticVariableItem linguisticVariable = containsLinguisticVariable(dataTemplateItem.getIndicatorName());
+							if (linguisticVariable == null) {
+								linguisticVariable = new LinguisticVariableItem();
+								linguisticVariable.setLinguisticVariableName(dataTemplateItem.getIndicatorName());
+								linguisticVariable.setMaxDomainValue(getMaxValueOfHospital(hospital.getMonths(), linguisticVariable.getLinguisticVariableName()));
+								linguisticVariable.setDomainType(dataTemplateItem.getIndicatorName().substring(dataTemplateItem.getIndicatorName().indexOf("_"), dataTemplateItem.getIndicatorName().length()));
+								//O Domaintype a princpio esta sendo atribuido os tipos "QTE" ou "VAL_TOT". 
+								
+								linguisticVariable.setLinguisticTerms(DataBaseGeneratorUtils.getInputTerms());
+								
+								List<FuzzySet> fuzzySetItens = new ArrayList<FuzzySet>();
+								
+								linguisticVariable.setFuzzySetItens(fuzzySetItens);
+								
+								this.linguisticVariableItens.add(linguisticVariable);
+							}
 						}
 					}
 				}

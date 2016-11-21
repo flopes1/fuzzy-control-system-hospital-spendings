@@ -27,14 +27,13 @@ public class ServiceTest
 	}
 
 	
-	//metodo bugado
 	
-//	@Test
-//	public void getSystemAnalysisByHospital()
-//	{
-//		String result = systemService.getSystemAnalysisByHospital("HAM");
-//		System.out.println(result);
-//		assertTrue(result != null);
-//	}
+	@Test
+	public void getSystemAnalysisByHospital()
+	{
+		String result = systemService.getSystemAnalysisByHospital("HAM");
+		System.out.println(result);
+		assertTrue(result != null);
+	}
 }
 
