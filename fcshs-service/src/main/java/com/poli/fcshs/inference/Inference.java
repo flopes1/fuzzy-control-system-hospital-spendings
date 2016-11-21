@@ -34,6 +34,8 @@ public class Inference implements IInference
 		
 		variableItem.setLinguisticVariableName(variableLinguisticNameOutput[0]);
 		variableItem.setLinguisticTerms(DataBaseGeneratorUtils.getOutputTerms());
+		variableItem.setDomainType("%");
+		variableItem.setMaxDomainValue(100);
 		
 		//cria um fuzzyset para cada termo linguistico
 		for (String term : variableItem.getLinguisticTerms())
