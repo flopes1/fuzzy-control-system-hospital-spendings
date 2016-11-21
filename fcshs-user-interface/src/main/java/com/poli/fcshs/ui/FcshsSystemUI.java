@@ -177,21 +177,36 @@ public class FcshsSystemUI
 				if (name == null || name.isEmpty())
 				{
 					JOptionPane.showMessageDialog(null, "Digite o nome do hospital");
+					return;
 				}
 				if (!allYearsCheck)
 				{
 					if (ano == null || ano.isEmpty())
 					{
 						JOptionPane.showMessageDialog(null, "Digite o ano para analise");
+						return;
 					}
 				}
 
 				String analisysResult = "";
+				try
+				{
+					if (allYearsCheck)
+					{
+						analisysResult = systemFacade.getSystemController()
+								.getSystemAnalysisByHospital(name.toUpperCase().trim());
+					}
+					else
+					{
+						analisysResult = systemFacade.getSystemController()
+								.getSystemAnalysisByHospital(name.toUpperCase().trim(), ano.trim());
+					}
 
-				if (allYearsCheck)
-					analisysResult = systemFacade.getSystemController().getSystemAnalysisByHospital(name);
-				else
-					analisysResult = systemFacade.getSystemController().getSystemAnalysisByHospital(name, ano);
+				}
+				catch (Exception e1)
+				{
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
 
 				results.setText(analisysResult);
 
