@@ -13,22 +13,30 @@ import com.poli.fcshs.data.repository.IDataTemplateRepository;
 
 public class SourceTemplateRepository implements IDataTemplateRepository
 {
-	
+
 	private final String XLS_DIR;
 	private File sourceDirectory;
-	
-	
+
 	public SourceTemplateRepository()
 	{
 		this.XLS_DIR = FcshsPropertiesLoader.getInstance()
 				.getPropertyByName(FcshsSetupConstants.DATA_TEMPLATE_DIRECTORY_XLS);
 		this.initializeDirectory();
 	}
-	
+
 	public File getDefaultDirectory()
 	{
 		return this.sourceDirectory;
 	}
+
+	/**
+	 * Find and return xls file with name passed, returns null if the file is
+	 * not found
+	 * 
+	 * @param xls
+	 *            file name
+	 * @return File archive from the xls directory
+	 */
 
 	public File getDataTemplateByYear(String year)
 	{
@@ -36,8 +44,8 @@ public class SourceTemplateRepository implements IDataTemplateRepository
 
 		List<File> allFile = (List<File>) FileUtils.listFiles(this.sourceDirectory,
 				new WildcardFileFilter("*" + FcshsConstants.INPUT_TEMPLATE_FORMAT), null);
-		
-		if(allFile == null || allFile.size() == 0)
+
+		if (allFile == null || allFile.size() == 0)
 		{
 			allFile = (List<File>) FileUtils.listFiles(this.sourceDirectory,
 					new WildcardFileFilter("*" + FcshsConstants.INPUT_TEMPLATE_FORMAT_SECOND), null);
@@ -46,12 +54,12 @@ public class SourceTemplateRepository implements IDataTemplateRepository
 		{
 			List<File> xlsxFiles = (List<File>) FileUtils.listFiles(this.sourceDirectory,
 					new WildcardFileFilter("*" + FcshsConstants.INPUT_TEMPLATE_FORMAT_SECOND), null);
-			if(xlsxFiles != null && xlsxFiles.size() > 0)
+			if (xlsxFiles != null && xlsxFiles.size() > 0)
 			{
 				allFile.addAll(xlsxFiles);
 			}
 		}
-			
+
 		if (allFile == null || allFile.isEmpty())
 		{
 			throw new RuntimeException("The root directory is empty");
@@ -69,14 +77,20 @@ public class SourceTemplateRepository implements IDataTemplateRepository
 		return dataTemplateFile;
 	}
 
+	/**
+	 * List all xls files in the directory set in the properties
+	 * 
+	 * @return List<File> list of file of all xls itens
+	 */
+
 	public List<File> getAllData()
 	{
 		List<File> allFiles = null;
 
 		allFiles = (List<File>) FileUtils.listFiles(this.sourceDirectory,
 				new WildcardFileFilter("*" + FcshsConstants.INPUT_TEMPLATE_FORMAT), null);
-		
-		if(allFiles == null || allFiles.size() == 0)
+
+		if (allFiles == null || allFiles.size() == 0)
 		{
 			allFiles = (List<File>) FileUtils.listFiles(this.sourceDirectory,
 					new WildcardFileFilter("*" + FcshsConstants.INPUT_TEMPLATE_FORMAT_SECOND), null);
@@ -85,7 +99,7 @@ public class SourceTemplateRepository implements IDataTemplateRepository
 		{
 			List<File> xlsxFiles = (List<File>) FileUtils.listFiles(this.sourceDirectory,
 					new WildcardFileFilter("*" + FcshsConstants.INPUT_TEMPLATE_FORMAT_SECOND), null);
-			if(xlsxFiles != null && xlsxFiles.size() > 0)
+			if (xlsxFiles != null && xlsxFiles.size() > 0)
 			{
 				allFiles.addAll(xlsxFiles);
 			}
@@ -96,28 +110,30 @@ public class SourceTemplateRepository implements IDataTemplateRepository
 
 	public boolean insertDataTemplate(String directory)
 	{
-		// TODO: Esse metodo será implementado apenas quando o sistema possuir interface gráfica
+		// TODO: Esse metodo será implementado apenas quando o sistema possuir
+		// interface gráfica
 		return false;
 	}
 
 	public boolean removeDataTemplateByYear(String year)
 	{
-		// TODO: Esse metodo será implementado apenas quando o sistema possuir interface gráfica
+		// TODO: Esse metodo será implementado apenas quando o sistema possuir
+		// interface gráfica
 		return false;
 	}
-	
+
 	private void initializeDirectory()
 	{
-		
+
 		this.sourceDirectory = new File(this.XLS_DIR);
-		
+
 		boolean hasInitialized = sourceDirectory.exists();
-		
+
 		if (!hasInitialized)
 		{
 			hasInitialized = sourceDirectory.mkdirs();
 		}
-		
+
 	}
-	
+
 }

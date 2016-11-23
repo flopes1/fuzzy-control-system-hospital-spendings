@@ -29,6 +29,12 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 		this.sourceTemplateRepository = new SourceTemplateRepository();
 	}
 
+	/**
+	 * Extract all information from a csv file with name equals to the parameter
+	 * passed
+	 * 
+	 * @return DataTemplateFile the extrated information in the csv file
+	 */
 	public DataTemplateFile extractDataByName(String fileName)
 	{
 		DataTemplateFile dataFile = new DataTemplateFile();
@@ -89,6 +95,12 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 		return dataFile;
 	}
 
+	/**
+	 * Extract all information from all csv file in the direcory set in the 
+	 * properties archive
+	 * 
+	 * @return List<DataTemplateFile> the extrated information in all csv file
+	 */
 	public List<DataTemplateFile> extractAllData()
 	{
 		List<File> allXlsxFile = this.sourceTemplateRepository.getAllData();
@@ -162,7 +174,7 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 		int startLine = 0, endLine = 0, counter = -1;
 		String[] result = null;
 
-		for (int i = 0; i < nextLine.length -1 ; i++)
+		for (int i = 0; i < nextLine.length - 1; i++)
 		{
 
 			if (nextLine[i].contains("#"))
@@ -178,7 +190,7 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 				}
 				else
 				{
-					endLine = i+1;
+					endLine = i + 1;
 				}
 				counter++;
 			}

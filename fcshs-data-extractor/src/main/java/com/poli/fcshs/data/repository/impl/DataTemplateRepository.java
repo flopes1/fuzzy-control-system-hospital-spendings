@@ -22,7 +22,7 @@ public class DataTemplateRepository implements IDataTemplateRepository
 	{
 		this.SOURCE_DIR = FcshsPropertiesLoader.getInstance()
 				.getPropertyByName(FcshsSetupConstants.DATA_TEMPLATE_DIRECTORY_CSV);
-		
+
 		this.initializeDirectory();
 	}
 
@@ -31,6 +31,12 @@ public class DataTemplateRepository implements IDataTemplateRepository
 		return this.rootDirectory;
 	}
 
+	/**
+	 * Find and returns a csv file with the name passed in param, returns null
+	 * if the file not found
+	 * 
+	 * @return File from the csv archive
+	 */
 	public File getDataTemplateByYear(String year)
 	{
 		File dataTemplateFile = null;
@@ -55,6 +61,12 @@ public class DataTemplateRepository implements IDataTemplateRepository
 		return dataTemplateFile;
 	}
 
+	/**
+	 * List all csv file in the root directory set in the properties archive,
+	 * returns a empty list if there is no file
+	 * 
+	 * @return List<File> from the all csv file
+	 */
 	public List<File> getAllData()
 	{
 		List<File> allFiles = null;
@@ -65,6 +77,14 @@ public class DataTemplateRepository implements IDataTemplateRepository
 		return allFiles;
 	}
 
+	/**
+	 * Insert a csv file with name passed in parameter, in the directory set in
+	 * the properties
+	 * 
+	 * @param String
+	 *            with the name of the csv file
+	 * @return boolean represents if the operation was successful
+	 */
 	public boolean insertDataTemplate(String newDataDirectory)
 	{
 		boolean hasInserted = false;
@@ -88,6 +108,14 @@ public class DataTemplateRepository implements IDataTemplateRepository
 		return hasInserted;
 	}
 
+	/**
+	 * Remove a csv file with name passed in parameter, in the directory set in
+	 * the properties
+	 * 
+	 * @param String
+	 *            with the name of the csv file
+	 * @return boolean represents if the operation was successful
+	 */
 	public boolean removeDataTemplateByYear(String year)
 	{
 		boolean hasRemoved = false;
@@ -115,7 +143,7 @@ public class DataTemplateRepository implements IDataTemplateRepository
 		{
 			hasInitialized = rootDirectory.mkdirs();
 		}
-		
+
 	}
-	
+
 }
