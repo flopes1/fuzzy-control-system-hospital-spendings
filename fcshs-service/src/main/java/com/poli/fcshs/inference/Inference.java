@@ -57,10 +57,10 @@ public class Inference implements IInference
 			//verifica cada linguisticvariableitem para saber se faz parte da regra
 			for (LinguisticVariableItem linguisticVariables : linguisticVariableList)
 			{
-				//percorre a lista de operandos
+				//percorre a lista de operandos das regras
 				for (int i = 0; i < systemRules.getOperands().size(); i++)
 				{
-					//se o perando na posição i(da regra) for igual a da linguisticvariableitem
+					//se o operando na posição i(da regra) for igual a da linguisticvariableitem
 					if(systemRules.getOperands().get(i).substring(0,systemRules.getOperands().get(i).lastIndexOf(",") ).equals(linguisticVariables.getLinguisticVariableName()))
 					{
 						List <FuzzySet> fuzzySetList = linguisticVariables.getFuzzySetItens();
@@ -79,13 +79,13 @@ public class Inference implements IInference
 									 	count++;
 								}
 								
-			                      
 							 }
 							 //divide a soma de todos os valores pelo numero de itens para obter a média
 							 average /= count;
 							 
+							 
 							 //verifica se o termo da regra é igual ao nome termo do fuzzyset
-							 String[] variableLinguisticName = systemRules.getOutput().split(",");
+							 String[] variableLinguisticName = systemRules.getOperands().get(i).split(",");
 							if (variableLinguisticName[1].equals(fuzzySet.getFuzzySetName()))
 							{
 								//adiciona em uma lista todos os valores (média) da linguisticvariableitem que batem com a regra
@@ -121,6 +121,7 @@ public class Inference implements IInference
 				
 				
 			}	
+			System.out.println(before);
 			
 			//percorre todos os fuzzyset da variavel de saída para preencher os valores que foram encontrados nas operações com conjuntos
 			for (FuzzySet fuzzySet : variableItem.getFuzzySetItens()){
@@ -138,10 +139,21 @@ public class Inference implements IInference
 							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
 							if (before > value)
 							{
-								fuzzySet.getFuzzySetItens().put(i, value);
+								if (fuzzySet.getFuzzySetItens().containsKey(i))
+								{
+									fuzzySet.getFuzzySetItens().put(i, ((fuzzySet.getFuzzySetItens().get(i) + value)/2));
+								}else
+								{
+									fuzzySet.getFuzzySetItens().put(i, value);
+								}
 							}else {
-								fuzzySet.getFuzzySetItens().put(i, before);
-							}
+								if (fuzzySet.getFuzzySetItens().containsKey(i))
+								{
+									fuzzySet.getFuzzySetItens().put(i, ((fuzzySet.getFuzzySetItens().get(i) + before)/2));
+								}else
+								{
+									fuzzySet.getFuzzySetItens().put(i, before);
+								}							}
 						}
 						//mesmo mapeamento, só que pra medio.
 					}else if (fuzzySet.getFuzzySetName().equals(DataBaseGeneratorUtils.getOutputTerms().get(1))) {
@@ -151,10 +163,20 @@ public class Inference implements IInference
 							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
 							if (before > value)
 							{
-								fuzzySet.getFuzzySetItens().put(i, value);
-							}else {
-								fuzzySet.getFuzzySetItens().put(i, before);
-							}
+								if (fuzzySet.getFuzzySetItens().containsKey(i))
+								{
+									fuzzySet.getFuzzySetItens().put(i, ((fuzzySet.getFuzzySetItens().get(i) + value)/2));
+								}else
+								{
+									fuzzySet.getFuzzySetItens().put(i, value);
+								}							}else {
+									if (fuzzySet.getFuzzySetItens().containsKey(i))
+									{
+										fuzzySet.getFuzzySetItens().put(i, ((fuzzySet.getFuzzySetItens().get(i) + before)/2));
+									}else
+									{
+										fuzzySet.getFuzzySetItens().put(i, before);
+									}							}
 						}
 						//mesmo mapeamento só que pra alto.
 					}else
@@ -164,9 +186,26 @@ public class Inference implements IInference
 							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
 							if (before > value)
 							{
-								fuzzySet.getFuzzySetItens().put(i, value);
+								
+								if (fuzzySet.getFuzzySetItens().containsKey(i))
+								{
+									fuzzySet.getFuzzySetItens().put(i, ((fuzzySet.getFuzzySetItens().get(i) + value)/2));
+								}else
+								{
+									fuzzySet.getFuzzySetItens().put(i, value);
+								}
+								
+								
 							}else {
-								fuzzySet.getFuzzySetItens().put(i, before);
+
+								if (fuzzySet.getFuzzySetItens().containsKey(i))
+								{
+									fuzzySet.getFuzzySetItens().put(i, ((fuzzySet.getFuzzySetItens().get(i) + before)/2));
+								}else
+								{
+									fuzzySet.getFuzzySetItens().put(i, before);
+								}
+								
 							}
 						}
 						
