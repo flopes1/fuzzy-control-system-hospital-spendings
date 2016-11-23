@@ -25,6 +25,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
+/**
+ * This class represents the main view of UI system
+ * 
+ * @author Filipe Lopes created on 20/11/2016
+ *
+ */
 public class FcshsSystemUI
 {
 
@@ -43,6 +49,29 @@ public class FcshsSystemUI
 	{
 		this.systemFacade = FcshsSystemFacade.getInstance();
 		initialize();
+	}
+
+	/**
+	 * Initialize UI
+	 */
+
+	public void startUserAplication()
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
+					FcshsSystemUI window = new FcshsSystemUI();
+					window.frame.setVisible(true);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	private void initialize()
@@ -232,22 +261,4 @@ public class FcshsSystemUI
 
 	}
 
-	public void startUserAplication()
-	{
-		EventQueue.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				try
-				{
-					FcshsSystemUI window = new FcshsSystemUI();
-					window.frame.setVisible(true);
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 }

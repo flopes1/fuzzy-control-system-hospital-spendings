@@ -14,6 +14,12 @@ public class DefuzzifierMeanMax extends DefuzzifierContinuousSet
 		super("Mean Maxima - MeOM", outputInferenceItem);
 	}
 
+	/**
+	 * Defuzzify a continuous function set in the class with MeOm method
+	 * 
+	 * @return SystemOutputItem the information of the process and results
+	 */
+
 	public SystemOutputItem defuzzify()
 	{
 		SystemOutputItem outputDefuzzyItem = new SystemOutputItem();

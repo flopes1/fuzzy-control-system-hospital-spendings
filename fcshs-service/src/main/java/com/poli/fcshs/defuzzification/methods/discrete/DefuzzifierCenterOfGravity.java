@@ -20,6 +20,11 @@ public class DefuzzifierCenterOfGravity extends DefuzzifierDiscreteSet
 		super("Center of Gravity - COG", outputInferenceItem);
 	}
 
+	/**
+	 * Defuzzify the discrete function set in the class with CoG method
+	 * 
+	 * @return SystemOutputItem the information of the process and results
+	 */
 	public SystemOutputItem defuzzify()
 	{
 		SystemOutputItem outputItem = new SystemOutputItem();
