@@ -14,6 +14,12 @@ public class ExtractorRules
 	{
 	}
 
+	/**
+	 * Extract all the rules in the properties archive
+	 * 
+	 * @return List<SystemRules> a list of all rules represented with operators
+	 *         and operands
+	 */
 	public List<SystemRules> extractRules()
 	{
 		String[] ruleLines = FcshsPropertiesLoader.getInstance().getPropertyByName(FcshsSetupConstants.DATA_RULES)
