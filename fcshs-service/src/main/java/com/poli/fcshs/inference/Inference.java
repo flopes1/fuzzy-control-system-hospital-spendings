@@ -21,7 +21,8 @@ public class Inference implements IInference
 		this.rules = new ExtractorRules();
 	}
 	
-	
+	//metodo que retorna um objeto linguisticVariableItem que terá um fuzzyset de cada termo (com um mapeamento de 0 a 100
+	//com seu grau de pertinencia).
 	public LinguisticVariableItem inference (List<LinguisticVariableItem> linguisticVariableList){
 		
 		//objeto que contém as regras
@@ -31,13 +32,13 @@ public class Inference implements IInference
 
 		String[] variableLinguisticNameOutput = rulesList.get(0).getOutput().split(",");
 		
-		
+		//seta as informações basicas do objeto a ser retornado.
 		variableItem.setLinguisticVariableName(variableLinguisticNameOutput[0]);
 		variableItem.setLinguisticTerms(DataBaseGeneratorUtils.getOutputTerms());
 		variableItem.setDomainType("%");
 		variableItem.setMaxDomainValue(100);
 		
-		//cria um fuzzyset para cada termo linguistico
+		//cria um fuzzyset para cada termo linguistico para o objeto a ser retornado.
 		for (String term : variableItem.getLinguisticTerms())
 		{
 			FuzzySet fuzzySet =  new FuzzySet();
@@ -51,10 +52,10 @@ public class Inference implements IInference
 		for (SystemRules systemRules : rulesList)			
 		{
 			
-			//lista que contém os valores normalizados de cada operando
+			//lista que contém os valores normalizados de cada operando, para fazer as operações com conjuntos em cima deles.
 			List<Double> listValues = new ArrayList<Double>();
 			
-			//verifica cada linguisticvariableitem para saber se faz parte da regra
+			//verifica cada linguisticvariableitem para saber se faz parte da regra.
 			for (LinguisticVariableItem linguisticVariables : linguisticVariableList)
 			{
 				//percorre a lista de operandos das regras
@@ -69,7 +70,7 @@ public class Inference implements IInference
 						{
 							Double average = 0.0;
 							int count=0;
-							//pega todas as keys
+							//percorre todo o hashmap para fazer a media dos valores.
 							 for (Double key : fuzzySet.getFuzzySetItens().keySet()) {
 			                      
 								 if (fuzzySet.getFuzzySetItens().get(key)>=0)
@@ -84,7 +85,8 @@ public class Inference implements IInference
 							 average /= count;
 							 
 							 
-							 //verifica se o termo da regra é igual ao nome termo do fuzzyset
+							 //verifica se o termo da regra é igual ao nome termo do fuzzyset, se for o valor será adicionado na listValues
+							 //para fazer as operações sobre os conjuntos.
 							 String[] variableLinguisticName = systemRules.getOperands().get(i).split(",");
 							if (variableLinguisticName[1].equals(fuzzySet.getFuzzySetName()))
 							{
@@ -129,7 +131,7 @@ public class Inference implements IInference
 				//se o nome (termo) do fuzzyset de saida for igual ao nome (termo) da conclusao da regra
 				if (fuzzySet.getFuzzySetName().equals(variableLinguisticName[1]))
 				{
-					//se o nome (termo) do fuzzyset de saida for igual a baixo, é mapeado com chaves de 0 a 100
+					//se o nome (termo) do fuzzyset de saida for igual a baixo, é mapeado com chaves de 0 a 100 e
 					//os valores correspondentes a função de pertinencia(de baixo), nao podendo ser maior que o 
 					//resultado calculado da regra.
 					if (fuzzySet.getFuzzySetName().equals(DataBaseGeneratorUtils.getOutputTerms().get(0)))
@@ -139,6 +141,8 @@ public class Inference implements IInference
 							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
 							if (before > value)
 							{
+								//faz a verificação pra saber se alguma regra já tinha setado esse fuzzyset, se tiver o valor
+								//adicionado será a media do novo valor com o valor anterior.
 								if (fuzzySet.getFuzzySetItens().containsKey(i))
 								{
 									fuzzySet.getFuzzySetItens().put(i, ((fuzzySet.getFuzzySetItens().get(i) + value)/2));
@@ -163,6 +167,8 @@ public class Inference implements IInference
 							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
 							if (before > value)
 							{
+								//faz a verificação pra saber se alguma regra já tinha setado esse fuzzyset, se tiver o valor
+								//adicionado será a media do novo valor com o valor anterior.
 								if (fuzzySet.getFuzzySetItens().containsKey(i))
 								{
 									fuzzySet.getFuzzySetItens().put(i, ((fuzzySet.getFuzzySetItens().get(i) + value)/2));
@@ -186,7 +192,8 @@ public class Inference implements IInference
 							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
 							if (before > value)
 							{
-								
+								//faz a verificação pra saber se alguma regra já tinha setado esse fuzzyset, se tiver o valor
+								//adicionado será a media do novo valor com o valor anterior.
 								if (fuzzySet.getFuzzySetItens().containsKey(i))
 								{
 									fuzzySet.getFuzzySetItens().put(i, ((fuzzySet.getFuzzySetItens().get(i) + value)/2));
@@ -247,8 +254,7 @@ public class Inference implements IInference
 		//cria uma nova lista de fuzzyset para substituir na variavel variableItem.
 		FuzzySet finalFuzzySet = new FuzzySet();
 		finalFuzzySet.setFuzzySetItens(resultHashMap);
-		//mudar nome depois.
-		finalFuzzySet.setFuzzySetName("indice");
+		finalFuzzySet.setFuzzySetName("indice de qualidade");
 		List<FuzzySet> fuzzySetList = new ArrayList<FuzzySet>();
 		fuzzySetList.add(finalFuzzySet);
 		

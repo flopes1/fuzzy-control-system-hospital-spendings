@@ -117,6 +117,8 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 		return dataTemplateItens;
 	}
 
+	
+	//cria o mês.
 	private Month createNewMonth(String[] line, String[] indicators)
 	{
 		Month newMonth = new Month();
@@ -126,6 +128,7 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 		return newMonth;
 	}
 
+	//cria a lista de dataTemplateItem.
 	private List<DataTemplateItem> createNewListDataObject(String[] line, String[] indicators)
 	{
 		List<DataTemplateItem> listData = new ArrayList<DataTemplateItem>();
@@ -141,6 +144,7 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 		return listData;
 	}
 
+	//Conta quantas linhas tem no arquivo xlsx.
 	private int numberLines(String[] nextLine)
 	{
 		int startLine = 0, endLine = 0, counter = 0;
@@ -167,7 +171,8 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 
 		return counter;
 	}
-
+	
+	//retorna a linha indicada.
 	private String[] getLine(String[] nextLine, int line)
 	{
 
@@ -206,7 +211,8 @@ public class DataTemplateExtractor implements IDataTempalteExtractor
 
 		return result;
 	}
-
+	
+	//retorna um objeto hospital da lista de hospitais.
 	private Hospital getHospitalByName(String name, List<Hospital> hospitalsList)
 	{
 		Hospital hospitalObject = null;
