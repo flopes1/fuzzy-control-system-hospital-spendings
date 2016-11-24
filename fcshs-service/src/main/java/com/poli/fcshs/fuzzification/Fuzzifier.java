@@ -1,5 +1,6 @@
 package com.poli.fcshs.fuzzification;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class Fuzzifier implements IFuzzifier{
 						boolean isUpdateFuzzySet = false;
 						for (FuzzySet fuzzySetItem : linguisticVariableItem.getFuzzySetItens()) {
 							if (fuzzySetItem.getFuzzySetName().equals(term)) {
-								fuzzySetItem.getFuzzySetItens().put(systemInputItem.getItemTotalAmountValue(), FuzzifierUtils.normalizeFuzzySetValues(systemInputItem.getItemTotalAmountValue(),term, linguisticVariableItem.getMaxDomainValue()));
+								fuzzySetItem.getFuzzySetItens().put((double)fuzzySetItem.getFuzzySetItens().size(), FuzzifierUtils.normalizeFuzzySetValues(systemInputItem.getItemTotalAmountValue(),term, linguisticVariableItem.getMaxDomainValue()));
 								isUpdateFuzzySet = true;
 							}
 							
@@ -65,7 +66,7 @@ public class Fuzzifier implements IFuzzifier{
 						boolean isUpdateFuzzySet = false;
 						for (FuzzySet fuzzySetItem : linguisticVariableItem.getFuzzySetItens()) {
 							if (fuzzySetItem.getFuzzySetName().equals(term)) {
-								fuzzySetItem.getFuzzySetItens().put(systemInputItem.getItemUnitaryValue(), FuzzifierUtils.normalizeFuzzySetValues(systemInputItem.getItemTotalAmountValue(),term, linguisticVariableItem.getMaxDomainValue()));
+								fuzzySetItem.getFuzzySetItens().put((double)fuzzySetItem.getFuzzySetItens().size(), FuzzifierUtils.normalizeFuzzySetValues(systemInputItem.getItemUnitaryValue(),term, linguisticVariableItem.getMaxDomainValue()));
 								isUpdateFuzzySet = true;
 							}
 						}
@@ -102,7 +103,8 @@ public class Fuzzifier implements IFuzzifier{
 		//Nome do fuzzySet.
 		
 		HashMap<Double, Double> fuzzySetItem = new HashMap<Double, Double>();
-		fuzzySetItem.put(indicatorValue, FuzzifierUtils.normalizeFuzzySetValues(indicatorValue,term,maxValue));
+		
+		fuzzySetItem.put((double)fuzzySet.getFuzzySetItens().size(), FuzzifierUtils.normalizeFuzzySetValues(indicatorValue,term,maxValue));
 		//Mapeamento com o valor e valorNormalizado.
 		
 		fuzzySet.setFuzzySetItens(fuzzySetItem);

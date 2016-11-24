@@ -12,6 +12,7 @@ public class FuzzySet
 
 	private String fuzzySetName;
 	private HashMap<Double, Double> fuzzySetItens;
+
 	
 
 	public FuzzySet()

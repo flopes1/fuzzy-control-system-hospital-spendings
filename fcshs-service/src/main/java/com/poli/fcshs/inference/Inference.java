@@ -81,6 +81,15 @@ public class Inference implements IInference
 								}
 								
 							 }
+							
+//							for (int j = 1; j < fuzzySet.getFuzzySetItensList().size(); j+=2)
+//							{
+//								if(fuzzySet.getFuzzySetItensList().get(j-1)>0){
+//								average += fuzzySet.getFuzzySetItensList().get(j);
+//								count++;
+//								}
+//							}
+							
 							 //divide a soma de todos os valores pelo numero de itens para obter a média
 							 average /= count;
 							 
