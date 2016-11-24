@@ -51,16 +51,14 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 		this("");
 	}
 
-	// De acordo com o que foi proposto este método deve retornar a lista de
-	// itens de um hospital
-	// e portanto deve ter acesso ao hospital em questão, neste caso foi
-	// considerado o nome do hospital.
-
+	//Método responsável por listar os dados de entrada, fornecidos pela planilha no sistema que serão usados na fuzzificação.
 	public List<SystemInputItem> generateSystemInputItensByYear(String hospitalName, String year)
 	{
 		int count;
 		this.allDataTemplateFile.add(this.dataTemplateExtractor.extractDataByName(year));
+		//Lista com as informações da planilha
 
+		//Loop que percorre os dados da lista acima e monta a lista de objetos usados pela fuzzificação.
 		for (DataTemplateFile dataTemplateFile : allDataTemplateFile)
 		{
 			for (Hospital hospital : dataTemplateFile.getHospitals())
@@ -73,6 +71,10 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 						List<DataTemplateItem> itens = month.getDataTemplateItens();
 						while (count < itens.size())
 						{
+							//Montagem dos objetos (SystemInputItem) que estarão na lista.
+							//O objeto conterá um nome, um par de informações das colunas sob mesmo dominio (ex: Paciente tem sob seu domínio Paciente_QTD e Pacient_VAL_TOT)
+							//e o mês do qual a informação corresponde na planilha.
+							
 							SystemInputItem systemInputItem = new SystemInputItem();
 							systemInputItem.setInputName(itens.get(count).getIndicatorName().substring(0,
 									itens.get(count).getIndicatorName().lastIndexOf("_")));
@@ -90,10 +92,12 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 		return this.inputSystemItens;
 	}
 
+	//Funcionamento idêntico ao método acima, com exceção que as informações da lista será referente a todas as planilhas do diretório.
 	public List<SystemInputItem> generateSystemInputItens(String hospitalName)
 	{
 		int count;
 		this.allDataTemplateFile = this.dataTemplateExtractor.extractAllData();
+		//Extrai a lista de informações de todas as planilhas.
 
 		for (DataTemplateFile dataTemplateFile : allDataTemplateFile)
 		{
@@ -107,6 +111,9 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 						List<DataTemplateItem> itens = month.getDataTemplateItens();
 						while (count < itens.size())
 						{
+							//Montagem dos objetos (SystemInputItem) que estarão na lista.
+							//O objeto conterá um nome, um par de informações das colunas sob mesmo dominio (ex: Paciente tem sob seu domínio Paciente_QTD e Pacient_VAL_TOT)
+							//e o mês do qual a informação corresponde na planilha.
 							SystemInputItem systemInputItem = new SystemInputItem();
 							systemInputItem.setInputName(itens.get(count).getIndicatorName().substring(0,
 									itens.get(count).getIndicatorName().lastIndexOf("_")));
@@ -124,70 +131,65 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 		return this.inputSystemItens;
 	}
 
-	// OBS: Alterar para utilizar lista de inputSystemItens (melhora de codigo)
-	public List<LinguisticVariableItem> generateSystemLinguisticVariables(String hospitalName)
-	{
-
-		for (DataTemplateFile dataTemplateFile : this.allDataTemplateFile)
-		{
-			for (Hospital hospital : dataTemplateFile.getHospitals())
-			{
-				if (hospital.getName().equals(hospitalName))
-				{
-					for (Month month : hospital.getMonths())
-					{
-						List<DataTemplateItem> itens = month.getDataTemplateItens();
-						for (DataTemplateItem dataTemplateItem : itens)
-						{
-							LinguisticVariableItem linguisticVariable = containsLinguisticVariable(
-									dataTemplateItem.getIndicatorName());
-							if (linguisticVariable == null)
-							{
-								linguisticVariable = new LinguisticVariableItem();
-								linguisticVariable.setLinguisticVariableName(dataTemplateItem.getIndicatorName());
-								linguisticVariable.setMaxDomainValue(getMaxValueOfHospital(hospital.getMonths(),
-										linguisticVariable.getLinguisticVariableName()));
-								linguisticVariable.setDomainType(dataTemplateItem.getIndicatorName().substring(
-										dataTemplateItem.getIndicatorName().indexOf("_"),
-										dataTemplateItem.getIndicatorName().length()));
-								// O Domaintype a princpio esta sendo atribuido
-								// os tipos "QTE" ou "VAL_TOT".
-
-								linguisticVariable.setLinguisticTerms(DataBaseGeneratorUtils.getInputTerms());
-
-								List<FuzzySet> fuzzySetItens = new ArrayList<FuzzySet>();
-
-								linguisticVariable.setFuzzySetItens(fuzzySetItens);
-
-								this.linguisticVariableItens.add(linguisticVariable);
-							}
-						}
-					}
+	//Este método cria a lista de variáveis linguisticas. Essa lista será preenchida com os valores na Fuzzicação.
+	//Este método usa as informações da lista de SystemInputItem.
+	public List<LinguisticVariableItem> generateSystemLinguisticVariables(){
+		for (SystemInputItem systemInputItem : this.inputSystemItens) {
+			LinguisticVariableItem linguisticVariable = containsLinguisticVariable(systemInputItem.getItemTotalAmountName());
+			//Verifica se ja existe uma variável linguistica com mesmo nome do primeiro DataTemplateItem dentro systemInputItem.
+			if (linguisticVariable == null) {
+				//Caso não exista essa variavel linguistica, cria uma nova.
+				//A variavel linguistica é criada com: nome, valor maximo que assume, lista de termos e a lista de fuzzySet vazia. 
+				linguisticVariable = new LinguisticVariableItem();
+				linguisticVariable.setLinguisticVariableName(systemInputItem.getItemTotalAmountName());
+				linguisticVariable.setMaxDomainValue(systemInputItem.getItemTotalAmountValue());
+				linguisticVariable.setDomainType(systemInputItem.getItemTotalAmountName().substring(systemInputItem.getItemTotalAmountName().indexOf("_"), systemInputItem.getItemTotalAmountName().length()));
+				//O Domaintype a princpio esta sendo atribuido os tipos "QTE" ou "VAL_TOT". 
+				
+				linguisticVariable.setLinguisticTerms(DataBaseGeneratorUtils.getInputTerms());
+				
+				List<FuzzySet> fuzzySetItens = new ArrayList<FuzzySet>();
+				
+				linguisticVariable.setFuzzySetItens(fuzzySetItens);
+				
+				this.linguisticVariableItens.add(linguisticVariable);
+			}else{
+				//Atualiza o valor maximo da variável linguistica.
+				if (systemInputItem.getItemTotalAmountValue() > (linguisticVariable.getMaxDomainValue() / DOMAIN_VALUE_MULTIPLIFIER)) {
+					linguisticVariable.setMaxDomainValue(systemInputItem.getItemTotalAmountValue());
+				}
+			}
+			//Verifica se ja existe uma variável linguistica com mesmo nome do segundo DataTemplateItem dentro systemInputItem.
+			linguisticVariable = containsLinguisticVariable(systemInputItem.getItemUnitaryName());
+			if (linguisticVariable == null) {
+				//Caso não exista essa variavel linguistica, cria uma nova.
+				//A variavel linguistica é criada com: nome, valor maximo que assume, lista de termos e a lista de fuzzySet vazia.
+				linguisticVariable = new LinguisticVariableItem();
+				linguisticVariable.setLinguisticVariableName(systemInputItem.getItemUnitaryName());
+				linguisticVariable.setMaxDomainValue(systemInputItem.getItemUnitaryValue());
+				linguisticVariable.setDomainType(systemInputItem.getItemUnitaryName().substring(systemInputItem.getItemUnitaryName().indexOf("_"), systemInputItem.getItemUnitaryName().length()));
+				//O Domaintype a princpio esta sendo atribuido os tipos "QTE" ou "VAL_TOT". 
+				
+				linguisticVariable.setLinguisticTerms(DataBaseGeneratorUtils.getInputTerms());
+				
+				List<FuzzySet> fuzzySetItens = new ArrayList<FuzzySet>();
+				
+				linguisticVariable.setFuzzySetItens(fuzzySetItens);
+				
+				this.linguisticVariableItens.add(linguisticVariable);
+			}else{
+				//Atualiza o valor maximo da variável linguistica.
+				if (systemInputItem.getItemUnitaryValue() > (linguisticVariable.getMaxDomainValue() / DOMAIN_VALUE_MULTIPLIFIER)) {
+					linguisticVariable.setMaxDomainValue(systemInputItem.getItemUnitaryValue());
 				}
 			}
 		}
+		
 		return this.linguisticVariableItens;
 	}
 
-	public double getMaxValueOfHospital(List<Month> months, String linguisticVariableName)
-	{
-		double maxValue = 0;
-		for (Month month : months)
-		{
-			for (DataTemplateItem dataTemplateItem : month.getDataTemplateItens())
-			{
-				if (dataTemplateItem.getIndicatorName().equals(linguisticVariableName))
-				{
-					if (maxValue < dataTemplateItem.getIndicatorValue())
-					{
-						maxValue = dataTemplateItem.getIndicatorValue();
-					}
-				}
-			}
-		}
-		return maxValue;
-	}
-
+	//Método que verifica se existe um a varíavel linguistica com o mesmo nome passado como parametro.
+	//Caso exista retorna a variável linguística.
 	public LinguisticVariableItem containsLinguisticVariable(String linguisticVariableItem)
 	{
 		for (LinguisticVariableItem linguisticVariable : this.linguisticVariableItens)

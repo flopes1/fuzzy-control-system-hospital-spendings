@@ -17,6 +17,6 @@ public interface IKnowledgeBaseGenerator
 	
 	List<SystemInputItem> generateSystemInputItensByYear(String hospitalName, String year);
 	
-	List<LinguisticVariableItem> generateSystemLinguisticVariables(String hospitalName);
+	List<LinguisticVariableItem> generateSystemLinguisticVariables();
 	
 }
