@@ -20,6 +20,7 @@ public class FcshsSetupConstants
 
 	// Configurable system values
 	public static final String ITEM_MAX_VALUE_MULTIPLIFIER = "system.item.max.multiplifier";
+	public static final String ITEM_MIN_VALUE_MULTIPLIFIER = "system.item.min.multiplifier";
 	public static final String DEFUZZIFICATION_METHOD = "system.output.defuzzi.method";
 
 }

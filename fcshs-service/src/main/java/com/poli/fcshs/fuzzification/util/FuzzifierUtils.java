@@ -3,7 +3,7 @@ package com.poli.fcshs.fuzzification.util;
 public class FuzzifierUtils
 {
 
-	public static double normalizeFuzzySetValues(double value,String term, double maxValue){
+	public static double normalizeFuzzySetValues(double value,String term, double minValue, double maxValue){
 		double valueNormalized = 0;
 		double leftLimit= 0;
 		double rightLimit= 0;
@@ -18,8 +18,8 @@ public class FuzzifierUtils
 
 		
 		if (term.equalsIgnoreCase("baixo")) {
-			leftLimit = 0;
-			rightLimit = 0.4 * maxValue;
+			leftLimit = minValue;
+			rightLimit = (0.4 * (maxValue - minValue) + minValue);
 			if (value < leftLimit || value >  rightLimit) {
 				valueNormalized = 0;
 			}
@@ -30,8 +30,8 @@ public class FuzzifierUtils
 			
 		}
 		if (term.equalsIgnoreCase("medio")) {
-			leftLimit = 0.3 * maxValue;
-			rightLimit = 0.7 * maxValue;
+			leftLimit = (0.3 * (maxValue - minValue) + minValue);
+			rightLimit = (0.7 * (maxValue - minValue) + minValue);
 			
 			if (value < leftLimit || value >  rightLimit) {
 				valueNormalized = 0;
@@ -44,7 +44,7 @@ public class FuzzifierUtils
 			}
 		}
 		if (term.equalsIgnoreCase("alto")) {
-			leftLimit = 0.6 * maxValue;
+			leftLimit = (0.6 * (maxValue - minValue) + minValue);
 			rightLimit = maxValue;
 			
 			if (value < leftLimit || value >  rightLimit) {

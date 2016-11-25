@@ -28,8 +28,10 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 	private DataTemplateExtractor dataTemplateExtractor;
 	private List<LinguisticVariableItem> linguisticVariableItens;
 	private List<SystemInputItem> inputSystemItens;
-	private static double DOMAIN_VALUE_MULTIPLIFIER = Double.valueOf(
+	private static double MAX_DOMAIN_VALUE_MULTIPLIFIER = Double.valueOf(
 			FcshsPropertiesLoader.getInstance().getPropertyByName(FcshsSetupConstants.ITEM_MAX_VALUE_MULTIPLIFIER));
+	private static double MIN_DOMAIN_VALUE_MULTIPLIFIER = Double.valueOf(
+			FcshsPropertiesLoader.getInstance().getPropertyByName(FcshsSetupConstants.ITEM_MIN_VALUE_MULTIPLIFIER));
 
 	// o argumento do construtor é o/os nomes (anos) das planilhas que vou
 	// utilizar
@@ -143,6 +145,7 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 				linguisticVariable = new LinguisticVariableItem();
 				linguisticVariable.setLinguisticVariableName(systemInputItem.getItemTotalAmountName());
 				linguisticVariable.setMaxDomainValue(systemInputItem.getItemTotalAmountValue());
+				linguisticVariable.setMinDomainValue(systemInputItem.getItemTotalAmountValue());
 				linguisticVariable.setDomainType(systemInputItem.getItemTotalAmountName().substring(systemInputItem.getItemTotalAmountName().indexOf("_"), systemInputItem.getItemTotalAmountName().length()));
 				//O Domaintype a princpio esta sendo atribuido os tipos "QTE" ou "VAL_TOT". 
 				
@@ -155,8 +158,12 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 				this.linguisticVariableItens.add(linguisticVariable);
 			}else{
 				//Atualiza o valor maximo da variável linguistica.
-				if (systemInputItem.getItemTotalAmountValue() > (linguisticVariable.getMaxDomainValue() / DOMAIN_VALUE_MULTIPLIFIER)) {
+				if (systemInputItem.getItemTotalAmountValue() > (linguisticVariable.getMaxDomainValue() / MAX_DOMAIN_VALUE_MULTIPLIFIER)) {
 					linguisticVariable.setMaxDomainValue(systemInputItem.getItemTotalAmountValue());
+				}
+				if(systemInputItem.getItemTotalAmountValue() < (linguisticVariable.getMinDomainValue() / MIN_DOMAIN_VALUE_MULTIPLIFIER))
+				{
+					linguisticVariable.setMinDomainValue(systemInputItem.getItemTotalAmountValue());
 				}
 			}
 			//Verifica se ja existe uma variável linguistica com mesmo nome do segundo DataTemplateItem dentro systemInputItem.
@@ -167,6 +174,7 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 				linguisticVariable = new LinguisticVariableItem();
 				linguisticVariable.setLinguisticVariableName(systemInputItem.getItemUnitaryName());
 				linguisticVariable.setMaxDomainValue(systemInputItem.getItemUnitaryValue());
+				linguisticVariable.setMinDomainValue(systemInputItem.getItemUnitaryValue());
 				linguisticVariable.setDomainType(systemInputItem.getItemUnitaryName().substring(systemInputItem.getItemUnitaryName().indexOf("_"), systemInputItem.getItemUnitaryName().length()));
 				//O Domaintype a princpio esta sendo atribuido os tipos "QTE" ou "VAL_TOT". 
 				
@@ -179,8 +187,12 @@ public class KnowledgeBaseGenerator implements IKnowledgeBaseGenerator
 				this.linguisticVariableItens.add(linguisticVariable);
 			}else{
 				//Atualiza o valor maximo da variável linguistica.
-				if (systemInputItem.getItemUnitaryValue() > (linguisticVariable.getMaxDomainValue() / DOMAIN_VALUE_MULTIPLIFIER)) {
+				if (systemInputItem.getItemUnitaryValue() > (linguisticVariable.getMaxDomainValue() / MAX_DOMAIN_VALUE_MULTIPLIFIER)) {
 					linguisticVariable.setMaxDomainValue(systemInputItem.getItemUnitaryValue());
+				}
+				if(systemInputItem.getItemUnitaryValue() < (linguisticVariable.getMinDomainValue() / MIN_DOMAIN_VALUE_MULTIPLIFIER))
+				{
+					linguisticVariable.setMinDomainValue(systemInputItem.getItemUnitaryValue());
 				}
 			}
 		}

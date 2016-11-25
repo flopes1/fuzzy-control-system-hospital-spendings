@@ -147,7 +147,7 @@ public class Inference implements IInference
 					{
 						for (Double i = 0.0; i <= 100.0; i+=0.5)
 						{
-							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
+							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 0,100);
 							if (before > value)
 							{
 								//faz a verificação pra saber se alguma regra já tinha setado esse fuzzyset, se tiver o valor
@@ -173,7 +173,7 @@ public class Inference implements IInference
 						
 						for (Double i = 0.0; i <= 100.0; i+=0.5)
 						{
-							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
+							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 0, 100);
 							if (before > value)
 							{
 								//faz a verificação pra saber se alguma regra já tinha setado esse fuzzyset, se tiver o valor
@@ -198,7 +198,7 @@ public class Inference implements IInference
 					{
 						for (Double i = 0.0; i <= 100.0; i+=0.5)
 						{
-							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 100);
+							Double value = FuzzifierUtils.normalizeFuzzySetValues(i, fuzzySet.getFuzzySetName(), 0, 100);
 							if (before > value)
 							{
 								//faz a verificação pra saber se alguma regra já tinha setado esse fuzzyset, se tiver o valor

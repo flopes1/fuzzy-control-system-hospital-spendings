@@ -18,25 +18,32 @@ public class LinguisticVariableItem
 	private List<String> linguisticTerms;
 	private List<FuzzySet> fuzzySetItens;
 	private double maxDomainValue;
+	private double minDomainValue;
+
 	private String domainType;
-	private static String DOMAIN_VALUE_MULTIPLIFIER;
+	private static String MAX_DOMAIN_VALUE_MULTIPLIFIER;
+	private static String MIN_DOMAIN_VALUE_MULTIPLIFIER;
 
 	public LinguisticVariableItem()
 	{
 		this.linguisticTerms = new ArrayList<String>();
 		this.fuzzySetItens = new ArrayList<FuzzySet>();
-		LinguisticVariableItem.DOMAIN_VALUE_MULTIPLIFIER = FcshsPropertiesLoader.getInstance()
+		LinguisticVariableItem.MAX_DOMAIN_VALUE_MULTIPLIFIER = FcshsPropertiesLoader.getInstance()
 				.getPropertyByName(FcshsSetupConstants.ITEM_MAX_VALUE_MULTIPLIFIER);
+		LinguisticVariableItem.MIN_DOMAIN_VALUE_MULTIPLIFIER = FcshsPropertiesLoader.getInstance()
+				.getPropertyByName(FcshsSetupConstants.ITEM_MIN_VALUE_MULTIPLIFIER);
 	}
 
 	public LinguisticVariableItem(String linguisticValiableName, List<String> terms, List<FuzzySet> fuzzySetItens,
-			double maxDomain, String domainType)
+			double minDomainValue, double maxDomain, String domainType)
 	{
 		this.linguisticVariableName = linguisticValiableName;
 		this.linguisticTerms = terms;
 		this.fuzzySetItens = fuzzySetItens;
+		this.minDomainValue = minDomainValue;
 		this.maxDomainValue = maxDomain;
 		this.domainType = domainType;
+		
 	}
 
 	public String getLinguisticVariableName()
@@ -71,7 +78,7 @@ public class LinguisticVariableItem
 
 	public double getMaxDomainValue()
 	{
-		return maxDomainValue * Double.parseDouble(DOMAIN_VALUE_MULTIPLIFIER);
+		return maxDomainValue * Double.parseDouble(MAX_DOMAIN_VALUE_MULTIPLIFIER);
 	}
 
 	public void setMaxDomainValue(double maxDomainValue)
@@ -87,6 +94,16 @@ public class LinguisticVariableItem
 	public void setDomainType(String domainType)
 	{
 		this.domainType = domainType;
+	}
+	
+	public double getMinDomainValue()
+	{
+		return minDomainValue * Double.parseDouble(MIN_DOMAIN_VALUE_MULTIPLIFIER);
+	}
+	
+	public void setMinDomainValue(double minDomainValue)
+	{
+		this.minDomainValue = minDomainValue;
 	}
 
 }

@@ -45,14 +45,14 @@ public class Fuzzifier implements IFuzzifier{
 						boolean isUpdateFuzzySet = false;
 						for (FuzzySet fuzzySetItem : linguisticVariableItem.getFuzzySetItens()) {
 							if (fuzzySetItem.getFuzzySetName().equals(term)) {
-								fuzzySetItem.getFuzzySetItens().put((double)fuzzySetItem.getFuzzySetItens().size(), FuzzifierUtils.normalizeFuzzySetValues(systemInputItem.getItemTotalAmountValue(),term, linguisticVariableItem.getMaxDomainValue()));
+								fuzzySetItem.getFuzzySetItens().put((double)fuzzySetItem.getFuzzySetItens().size(), FuzzifierUtils.normalizeFuzzySetValues(systemInputItem.getItemTotalAmountValue(),term, linguisticVariableItem.getMinDomainValue(), linguisticVariableItem.getMaxDomainValue()));
 								isUpdateFuzzySet = true;
 							}
 							
 						}
 						if (!isUpdateFuzzySet) {
 							//Caso ja exista um fuzzySet criado para o termo,então apenas atualiza com um novo mapeamento o fuzzySet existente.
-							linguisticVariableItem.getFuzzySetItens().add(generateFuzzySet(systemInputItem.getItemTotalAmountValue(), term, linguisticVariableItem.getMaxDomainValue()));
+							linguisticVariableItem.getFuzzySetItens().add(generateFuzzySet(systemInputItem.getItemTotalAmountValue(), term, linguisticVariableItem.getMinDomainValue(),linguisticVariableItem.getMaxDomainValue()));
 						}
 					}
 				}
@@ -66,13 +66,13 @@ public class Fuzzifier implements IFuzzifier{
 						boolean isUpdateFuzzySet = false;
 						for (FuzzySet fuzzySetItem : linguisticVariableItem.getFuzzySetItens()) {
 							if (fuzzySetItem.getFuzzySetName().equals(term)) {
-								fuzzySetItem.getFuzzySetItens().put((double)fuzzySetItem.getFuzzySetItens().size(), FuzzifierUtils.normalizeFuzzySetValues(systemInputItem.getItemUnitaryValue(),term, linguisticVariableItem.getMaxDomainValue()));
+								fuzzySetItem.getFuzzySetItens().put((double)fuzzySetItem.getFuzzySetItens().size(), FuzzifierUtils.normalizeFuzzySetValues(systemInputItem.getItemUnitaryValue(),term, linguisticVariableItem.getMinDomainValue(), linguisticVariableItem.getMaxDomainValue()));
 								isUpdateFuzzySet = true;
 							}
 						}
 						if (!isUpdateFuzzySet) {
 							//Caso ja exista um fuzzySet criado para o termo,então apenas atualiza com um novo mapeamento o fuzzySet existente.
-							linguisticVariableItem.getFuzzySetItens().add(generateFuzzySet(systemInputItem.getItemUnitaryValue(), term, linguisticVariableItem.getMaxDomainValue()));
+							linguisticVariableItem.getFuzzySetItens().add(generateFuzzySet(systemInputItem.getItemUnitaryValue(), term, linguisticVariableItem.getMinDomainValue(),linguisticVariableItem.getMaxDomainValue()));
 						}
 						
 					}
@@ -97,14 +97,14 @@ public class Fuzzifier implements IFuzzifier{
 	
 
 	//Cria um novo fuzzySet com o nome passado e um mapeamento entre o valor passado e valor normalizado.
-	public FuzzySet generateFuzzySet(double indicatorValue, String term, double maxValue){
+	public FuzzySet generateFuzzySet(double indicatorValue, String term, double minValue ,double maxValue){
 		FuzzySet fuzzySet = new FuzzySet();
 		fuzzySet.setFuzzySetName(term);
 		//Nome do fuzzySet.
 		
 		HashMap<Double, Double> fuzzySetItem = new HashMap<Double, Double>();
 		
-		fuzzySetItem.put((double)fuzzySet.getFuzzySetItens().size(), FuzzifierUtils.normalizeFuzzySetValues(indicatorValue,term,maxValue));
+		fuzzySetItem.put((double)fuzzySet.getFuzzySetItens().size(), FuzzifierUtils.normalizeFuzzySetValues(indicatorValue,term, minValue,maxValue));
 		//Mapeamento com o valor e valorNormalizado.
 		
 		fuzzySet.setFuzzySetItens(fuzzySetItem);
