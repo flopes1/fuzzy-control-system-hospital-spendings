@@ -12,14 +12,14 @@ public class FuzzifierUtils
 		
 		
 		// foram definidas as seguintes regras para o sistema:  
-		// faixa de valores baixos entre 0% ~ 40% (em relação ao valor maximo)
-		// faixa de valores medios entre 30% ~ 70% (em relação ao valor maximo)
-		// faixa de valores altos entre 60% ~ 100% (em relação ao valor maximo)
+		// faixa de valores baixos entre 0% ~ 60% (em relação ao valor maximo)
+		// faixa de valores medios entre 40% ~ 60% (em relação ao valor maximo)
+		// faixa de valores altos entre 40% ~ 100% (em relação ao valor maximo)
 
 		
 		if (term.equalsIgnoreCase("baixo")) {
 			leftLimit = minValue;
-			rightLimit = (0.4 * (maxValue - minValue) + minValue);
+			rightLimit = (0.6 * (maxValue - minValue) + minValue);
 			if (value < leftLimit || value >  rightLimit) {
 				valueNormalized = 0;
 			}
@@ -30,8 +30,8 @@ public class FuzzifierUtils
 			
 		}
 		if (term.equalsIgnoreCase("medio")) {
-			leftLimit = (0.3 * (maxValue - minValue) + minValue);
-			rightLimit = (0.7 * (maxValue - minValue) + minValue);
+			leftLimit = (0.4 * (maxValue - minValue) + minValue);
+			rightLimit = (0.6 * (maxValue - minValue) + minValue);
 			
 			if (value < leftLimit || value >  rightLimit) {
 				valueNormalized = 0;
@@ -44,7 +44,7 @@ public class FuzzifierUtils
 			}
 		}
 		if (term.equalsIgnoreCase("alto")) {
-			leftLimit = (0.6 * (maxValue - minValue) + minValue);
+			leftLimit = (0.4 * (maxValue - minValue) + minValue);
 			rightLimit = maxValue;
 			
 			if (value < leftLimit || value >  rightLimit) {
